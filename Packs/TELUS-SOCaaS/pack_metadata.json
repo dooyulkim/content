@@ -1,0 +1,20 @@
+{
+    "name": "Telus SOC as a Service",
+    "description": "Telus SOC as a Service",
+    "support": "developer",
+    "currentVersion": "1.0.0",
+    "author": "Telus",
+    "url": "",
+    "email": "",
+    "categories": [
+        "Analytics & SIEM"
+    ],
+    "tags": [],
+    "useCases": [],
+    "keywords": [],
+    "marketplaces": [
+        "xsoar",
+        "marketplacev2"
+    ],
+    "githubUser": []
+}

@@ -1,0 +1,23 @@
+{
+    "get_alert_result": {
+        "id": 3274,
+        "createdAt": "2022-10-05T15:25:17Z",
+        "sourceId": "XSOAR_LOGRHYTHM",
+        "sourceCreatedAt": "2022-05-10T15:23:48Z",
+        "sourceModifiedAt": "2022-05-10T15:23:48Z",
+        "sourceAlertId": "597774",
+        "sourceRaw": "{}",
+        "severity": "MEDIUM",
+        "customerId": 33096,
+        "investigationCaseId": 4431,
+        "acknowledgedBy": null,
+        "acknowledgedAt": null,
+        "name": "AIE: silent unique value not observed - paired",
+        "detailHtml": null,
+        "providerId": "XSOAR_LOGRHYTHM",
+        "providerCreatedAt": "2022-05-10T15:23:48Z",
+        "providerModifiedAt": "2022-05-10T15:23:48Z",
+        "providerAlertId": "597774",
+        "providerRaw": "{}"
+    }
+}
