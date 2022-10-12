@@ -120,6 +120,6 @@ def test_acknowledge_case_command(mocker):
     """
     client = Client(base_url=URL)
     mocker.patch.object(Client, 'acknowledge_case', return_value='')
-    results = acknowledge_case_command(client, args={'case_id': '1234'})
-    human_readable = 'MSSPortal Case 1234 acknowledged'
+    results = acknowledge_case_command(client, args={'alert_id': '1234'})
+    human_readable = 'MSSPortal Case related to Alert 1234 acknowledged'
     assert results.readable_output == human_readable
