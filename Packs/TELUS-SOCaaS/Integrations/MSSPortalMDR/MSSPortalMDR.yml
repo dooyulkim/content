@@ -22,6 +22,10 @@ configuration:
     defaultvalue: null
     type: 0
     additionalinfo: null
+  - display: Use system proxy settings
+    name: proxy
+    required: false
+    type: 8
   - name: feed
     display: Fetch indicators
     required: false
