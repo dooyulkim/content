@@ -57,7 +57,7 @@ import io
 import json
 
 from CommonServerPython import tableToMarkdown
-from MSSPortalMDR import Client, get_alert_command
+from MSSPortalMDR import Client, get_alert_command, update_case_command, acknowledge_case_command
 # from MSSPortalMDR import Client, create_alert_command, get_alert_command
 
 URL = "https://portalservice.url"
@@ -83,4 +83,43 @@ def test_get_alert_command(mocker):
     mocker.patch.object(Client, 'get_alert', return_value=result_alert)
     results = get_alert_command(client, args={'alert_id': '1'})
     human_readable = tableToMarkdown('MSSPortal Alert 1', result_alert)
+    assert results.readable_output == human_readable
+
+
+def test_update_case_command(mocker):
+    """
+    Given:
+        - Output of the portal API as list
+    When:
+        - Getting a alert from the Portal API
+    Then:
+        - Return results as war-room entry
+
+    """
+    client = Client(base_url=URL)
+    mocker.patch.object(Client, 'update_case', return_value='')
+    results = update_case_command(client, args={'case_id': '1234', 'status': 'IN_PROGRESS'})
+    human_readable = 'MSSPortal Case 1234 updated'
+    assert results.readable_output == human_readable
+
+    try:
+        update_case_command(client, args={'status': 'IN_PROGRESS'})
+    except ValueError as error:
+        assert 'case_id not specified' == str(error)
+
+
+def test_acknowledge_case_command(mocker):
+    """
+    Given:
+        - Output of the portal API as list
+    When:
+        - Getting a alert from the Portal API
+    Then:
+        - Return results as war-room entry
+
+    """
+    client = Client(base_url=URL)
+    mocker.patch.object(Client, 'acknowledge_case', return_value='')
+    results = acknowledge_case_command(client, args={'case_id': '1234'})
+    human_readable = 'MSSPortal Case 1234 acknowledged'
     assert results.readable_output == human_readable

@@ -1,0 +1,2 @@
+!mssportal-create-alert provider_id="XSOAR_LOGRHYTHM" created_at="2022-11-10T12:52:38.610000+00:00" modified_at="2022-11-10T12:52:38.610000+00:00" alert_id="599135" raw_data="{}" severity="MEDIUM" customer_id="33096" name="AIE: CSC: Password Modified by Another User" using-brand="MSS Portal - MDR"
+!mssportal-get-alert alert_id=258

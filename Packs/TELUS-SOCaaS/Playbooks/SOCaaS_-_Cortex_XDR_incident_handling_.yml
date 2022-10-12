@@ -1,0 +1,721 @@
+id: 1ac8a067-8edf-47c2-8021-ddfde8011533
+version: 39
+contentitemexportablefields:
+  contentitemfields:
+    packID: ""
+    itemVersion: 4.8.18
+    fromServerVersion: 6.0.0
+    toServerVersion: ""
+    definitionid: ""
+vcShouldKeepItemLegacyProdMachine: false
+name: 'SOCaaS - Cortex XDR incident handling '
+description: |-
+  This playbook is triggered by fetching a Palo Alto Networks Cortex XDR incident.
+  The playbook syncs and updates new XDR alerts that construct the incident and triggers a sub-playbook to handle each alert by type.
+  Then, the playbook performs enrichment on the incident’s indicators and hunts for related IOCs.
+  Based on the severity, it lets the analyst decide whether to continue to the remediation stage or close the investigation as a false positive.
+  After the remediation, if there are no new alerts, the playbook stops the alert sync and closes the XDR incident and investigation. For performing the bidirectional sync, the playbook uses the incoming and outgoing mirroring feature added in XSOAR version 6.0.0. After the Calculate Severity - Generic v2 sub-playbook’s run, Cortex XSOAR will be treated as the single source of truth for the severity field, and it will sync only from Cortex XSOAR to XDR, so manual changes for the severity field in XDR will not update in the XSOAR incident.
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: 2dd4904d-513e-4071-8b3e-25aeba751b52
+    type: start
+    task:
+      id: 2dd4904d-513e-4071-8b3e-25aeba751b52
+      version: -1
+      name: ""
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "22"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1700,
+          "y": -2450
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "2":
+    id: "2"
+    taskid: cab3c7e6-e7b0-4401-86e7-a76a6805a2f3
+    type: condition
+    task:
+      id: cab3c7e6-e7b0-4401-86e7-a76a6805a2f3
+      version: -1
+      name: Should handle the incident?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#default#':
+      - "4"
+      "yes":
+      - "3"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: inList
+          left:
+            value:
+              simple: PaloAltoNetworksXDR.Incident.severity
+            iscontext: true
+          right:
+            value:
+              simple: medium,high,critical
+          ignorecase: true
+    view: |-
+      {
+        "position": {
+          "x": 1700,
+          "y": -2030
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 2
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "3":
+    id: "3"
+    taskid: 8dfb28d3-07d2-440c-86c0-92c42517ec58
+    type: regular
+    task:
+      id: 8dfb28d3-07d2-440c-86c0-92c42517ec58
+      version: -1
+      name: Create a case in portal
+      description: Create an alert using Portal's MDR API
+      script: MSS Portal - MDR|||mssportal-create-alert
+      type: regular
+      iscommand: true
+      brand: MSS Portal - MDR
+    nexttasks:
+      '#none#':
+      - "11"
+      - "12"
+      - "15"
+    scriptarguments:
+      alert_id:
+        simple: '{iincident.id}'
+      created_at:
+        complex:
+          root: incident
+          accessor: created
+          transformers:
+          - operator: FormattedDateToEpoch
+            args:
+              formatter: {}
+          - operator: TimeStampToDate
+      customer_id:
+        simple: "33096"
+      modified_at:
+        complex:
+          root: incident
+          accessor: modified
+          transformers:
+          - operator: FormattedDateToEpoch
+            args:
+              formatter: {}
+          - operator: TimeStampToDate
+      name:
+        simple: ${incident.name}
+      provider_id:
+        simple: ${incident.sourceInstance}
+      raw_data:
+        complex:
+          root: incident
+          transformers:
+          - operator: Stringify
+      severity:
+        complex:
+          root: incident
+          accessor: severity
+          transformers:
+          - operator: MapValuesTransformer
+            args:
+              input_values:
+                value:
+                  simple: 0,1,2,3,4,5
+              mapped_values:
+                value:
+                  simple: LOW,LOW,MEDIUM,MEDIUM,HIGH,HIGH
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1190,
+          "y": -1760
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 2
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "4":
+    id: "4"
+    taskid: 4315f52d-ad89-488f-8e38-276cffab0091
+    type: title
+    task:
+      id: 4315f52d-ad89-488f-8e38-276cffab0091
+      version: -1
+      name: Done
+      type: title
+      iscommand: false
+      brand: ""
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1240,
+          "y": 360
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "7":
+    id: "7"
+    taskid: 31643562-1319-4ba3-8566-eeb927c8ebc5
+    type: regular
+    task:
+      id: 31643562-1319-4ba3-8566-eeb927c8ebc5
+      version: -1
+      name: Update the case in portal to change the case status from pending to inprogress
+      description: |-
+        acknowlege the alert to change the status of the case.
+        API put /acknowledgement
+      type: regular
+      iscommand: false
+      brand: MSS Portal - MDR
+    nexttasks:
+      '#none#':
+      - "21"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 600,
+          "y": -580
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 2
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "9":
+    id: "9"
+    taskid: acb3abd6-d097-4d41-81c6-0babca812744
+    type: regular
+    task:
+      id: acb3abd6-d097-4d41-81c6-0babca812744
+      version: -1
+      name: Close incident
+      description: Close incident in portal, in xsoar and in xdr
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "4"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 130,
+          "y": -580
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "10":
+    id: "10"
+    taskid: 811eaec1-4190-4356-83e6-99655d9e1507
+    type: regular
+    task:
+      id: 811eaec1-4190-4356-83e6-99655d9e1507
+      version: -1
+      name: Check if the endpoint is VIP or server
+      description: Generates random string
+      scriptName: GenerateRandomString
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "16"
+    scriptarguments:
+      Digits:
+        simple: "False"
+      Length:
+        simple: "1"
+      Lowercase:
+        simple: "True"
+      Punctuation:
+        simple: "False"
+      Uppercase:
+        simple: "False"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 600,
+          "y": -315
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "11":
+    id: "11"
+    taskid: 5350567d-b49a-4402-8667-c6d4db659702
+    type: condition
+    task:
+      id: 5350567d-b49a-4402-8667-c6d4db659702
+      version: -1
+      name: Malware on Host
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "23"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: containsGeneral
+          left:
+            value:
+              simple: PaloAltoNetworksXDR.Incident.alert_categories
+            iscontext: true
+          right:
+            value:
+              simple: Malware
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": -1330
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "12":
+    id: "12"
+    taskid: ee6c693b-dcc4-4423-8d4e-de7246be1742
+    type: regular
+    task:
+      id: ee6c693b-dcc4-4423-8d4e-de7246be1742
+      version: -1
+      name: 'Alert Category #1'
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "4"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1040,
+          "y": -1320
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "13":
+    id: "13"
+    taskid: 68359e5a-7b0c-4134-888e-81e428d2c3fb
+    type: regular
+    task:
+      id: 68359e5a-7b0c-4134-888e-81e428d2c3fb
+      version: -1
+      name: Check if false positive
+      description: Generates random string
+      scriptName: GenerateRandomString
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "14"
+    scriptarguments:
+      Digits:
+        simple: "False"
+      Length:
+        simple: "1"
+      Lowercase:
+        simple: "True"
+      Punctuation:
+        simple: "False"
+      Uppercase:
+        simple: "False"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": -945
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "14":
+    id: "14"
+    taskid: 9048e00c-105c-494c-87d1-2c3cc1e4b2b3
+    type: condition
+    task:
+      id: 9048e00c-105c-494c-87d1-2c3cc1e4b2b3
+      version: -1
+      name: Is false positive?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#default#':
+      - "7"
+      "yes":
+      - "9"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: match
+          left:
+            value:
+              simple: ${RandomString}
+            iscontext: true
+          right:
+            value:
+              simple: '[a-f]'
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": -780
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "15":
+    id: "15"
+    taskid: 8bb09484-bd35-471c-8efe-9e5dcd85bb7f
+    type: regular
+    task:
+      id: 8bb09484-bd35-471c-8efe-9e5dcd85bb7f
+      version: -1
+      name: 'Alert Category #2'
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "4"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1670,
+          "y": -1330
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "16":
+    id: "16"
+    taskid: fa896be0-48f3-47dc-8df1-e6f29c2bd63a
+    type: condition
+    task:
+      id: fa896be0-48f3-47dc-8df1-e6f29c2bd63a
+      version: -1
+      name: Is the endpoint VIP or Server?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#default#':
+      - "18"
+      "yes":
+      - "17"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: inList
+          left:
+            value:
+              simple: RandomString
+            iscontext: true
+          right:
+            value:
+              simple: '[a-o]'
+          ignorecase: true
+    view: |-
+      {
+        "position": {
+          "x": 600,
+          "y": -170
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "17":
+    id: "17"
+    taskid: b78e3e34-2435-4fda-8496-0470e367eca1
+    type: regular
+    task:
+      id: b78e3e34-2435-4fda-8496-0470e367eca1
+      version: -1
+      name: Create portal task
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "4"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": 5
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "18":
+    id: "18"
+    taskid: 54d7bb22-f781-4ac6-82a8-ae55881e6d56
+    type: regular
+    task:
+      id: 54d7bb22-f781-4ac6-82a8-ae55881e6d56
+      version: -1
+      name: handle endpoint isolation
+      description: Isolates the specified endpoint.
+      script: Cortex XDR - IR|||xdr-endpoint-isolate
+      type: regular
+      iscommand: true
+      brand: Cortex XDR - IR
+    nexttasks:
+      '#none#':
+      - "19"
+    continueonerror: true
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 820,
+          "y": 5
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "19":
+    id: "19"
+    taskid: 674b116c-9c96-49eb-8e5e-18b162114f66
+    type: regular
+    task:
+      id: 674b116c-9c96-49eb-8e5e-18b162114f66
+      version: -1
+      name: create task for customer to clean up host
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "4"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 820,
+          "y": 160
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "21":
+    id: "21"
+    taskid: f49a883b-1c24-428f-84d3-782a4d81ed74
+    type: regular
+    task:
+      id: f49a883b-1c24-428f-84d3-782a4d81ed74
+      version: -1
+      name: create a task to assign it to customer
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "10"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 600,
+          "y": -455
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "22":
+    id: "22"
+    taskid: 27529ead-9d4f-4c61-85b2-921e2f1a4458
+    type: regular
+    task:
+      id: 27529ead-9d4f-4c61-85b2-921e2f1a4458
+      version: -1
+      name: 'Get extra incident data '
+      description: Returns additional data for the specified incident, for example,
+        related alerts, file artifacts, network artifacts, and so on.
+      script: Cortex XDR - IR|||xdr-get-incident-extra-data
+      type: regular
+      iscommand: true
+      brand: Cortex XDR - IR
+    nexttasks:
+      '#none#':
+      - "2"
+    scriptarguments:
+      incident_id:
+        simple: ${PaloAltoNetworksXDR.Incident.incident_id}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1700,
+          "y": -2270
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "23":
+    id: "23"
+    taskid: c535c9dd-fecb-4c8a-8a5f-09c8d621a1ae
+    type: regular
+    task:
+      id: c535c9dd-fecb-4c8a-8a5f-09c8d621a1ae
+      version: -1
+      name: Indicent Enrichment
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "13"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": -1135
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 2875,
+        "width": 1950,
+        "x": 130,
+        "y": -2450
+      }
+    }
+  }
+inputs: []
+outputs: []
+sourceplaybookid: Cortex XDR incident handling v3

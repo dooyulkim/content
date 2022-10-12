@@ -48,7 +48,31 @@ class Client(BaseClient):
 
         return self._http_request('get', f'/alerts/{alert_id}')
 
-    def create_alert(self, json_data: Dict[str, Any]) -> Dict[str, Any]:
+    def update_case(self, case_id: str, data: Dict[str, Any]) -> str:
+        """Updates a specific MSSPortal case by id
+
+        :type case_id: ``str``
+        :param case_id: id of the case to update
+
+        :return: string from the API call
+        :rtype: ``str``
+        """
+
+        return self._http_request('put', f'/cases/{case_id}', json_data=data, resp_type='text')
+
+    def acknowledge_case(self, case_id: str) -> str:
+        """Acknowledge a specific MSSPortal case by id
+
+        :type case_id: ``str``
+        :param case_id: id of the case to acknowledge
+
+        :return: string from the API call
+        :rtype: ``str``
+        """
+
+        return self._http_request('put', f'/cases/{case_id}/acknowledgement', resp_type='text')
+
+    def create_alert(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Gets a specific MSSPortal alert by id
 
         :type: dict containing the alert
@@ -58,7 +82,7 @@ class Client(BaseClient):
         :rtype: ``Dict[str, Any]``
         """
 
-        return self._http_request('post', '/alerts', json_data=json_data)
+        return self._http_request('post', '/alerts', json_data=data)
 
 
 ''' HELPER FUNCTIONS '''
@@ -136,6 +160,85 @@ def get_alert_command(client: Client, args: Dict[str, Any]) -> CommandResults:
         outputs_prefix='MSSPortal.Alert',
         outputs_key_field='id',
         outputs=alert
+    )
+
+
+def update_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-update-case command: Returns a MSSPortal case
+
+    :type client: ``Client``
+    :param Client: MSSPortal client to use
+
+    :type args: ``Dict[str, Any]``
+    :param args:
+        all command arguments, usually passed from ``demisto.args()``.
+        ``args['case_id']`` alert ID to return
+
+    :return:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains the result of case update
+
+    :rtype: ``CommandResults``
+    """
+
+    case_id = args.get('case_id', None)
+    if not case_id:
+        raise ValueError('case_id not specified')
+
+    json_data: Dict[str, Any] = {}
+
+    status = args.get('status')
+    if not status:
+        json_data['status'] = status
+    telusPrime = args.get('telusPrime')
+    if not status:
+        json_data['telusPrime'] = telusPrime
+    description = args.get('description')
+    if not status:
+        json_data['description'] = description
+    caseTitle = args.get('caseTitle')
+    if not status:
+        json_data['caseTitle'] = caseTitle
+    priority = args.get('priority')
+    if not priority:
+        json_data['priority'] = priority
+    resolutionNotes = args.get('resolutionNotes')
+    if not resolutionNotes:
+        json_data['resolutionNotes'] = resolutionNotes
+
+    client.update_case(case_id, json_data)
+
+    return CommandResults(
+        readable_output=f'MSSPortal Case {case_id} updated'
+    )
+
+
+def acknowledge_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-acknowledge-alert command: Returns a MSSPortal case
+
+    :type client: ``Client``
+    :param Client: MSSPortal client to use
+
+    :type args: ``Dict[str, Any]``
+    :param args:
+        all command arguments, usually passed from ``demisto.args()``.
+        ``args['case_id']`` case ID to return
+
+    :return:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains an alert
+
+    :rtype: ``CommandResults``
+    """
+
+    case_id = args.get('case_id', None)
+    if not case_id:
+        raise ValueError('case_id not specified')
+
+    client.acknowledge_case(case_id)
+
+    return CommandResults(
+        readable_output=f'MSSPortal Case {case_id} acknowledged'
     )
 
 
@@ -267,6 +370,10 @@ def main() -> None:
 
         elif demisto.command() == 'mssportal-get-alert':
             return_results(get_alert_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-update-case':
+            return_results(update_case_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-acknowledge-case':
+            return_results(acknowledge_case_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-create-alert':
             return_results(create_alert_command(client, demisto.args()))
 

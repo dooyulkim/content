@@ -3,146 +3,187 @@ commonfields:
   id: MSS Portal - MDR
   version: -1
 configuration:
-- defaultvalue: https://tssapi-preprod.telus.com
-  display: Server URL (e.g. 'https://tssapi-preprod.telus.com)
-  name: url
-  required: true
-  type: 0
-- additionalinfo: This parameter does not have any effect since v1 will be added automatically into api url
-  defaultvalue: v1
-  display: Currently, we use v1 of MSS Portal API
-  name: api_version
-  required: true
-  type: 0
-- display: MSS Portal API Key
-  name: api_key
-  required: true
-  type: 0
-- display: Fetch indicators
-  name: feed
-  required: false
-  type: 8
+  - name: url
+    display: Server URL (e.g. 'https://tssapi-preprod.telus.com)
+    required: true
+    defaultvalue: https://tssapi-preprod.telus.com
+    type: 0
+    additionalinfo: null
+  - name: api_version
+    display: Currently, we use v1 of MSS Portal API
+    required: true
+    defaultvalue: v1
+    type: 0
+    additionalinfo: This parameter does not have any effect since v1 will be added
+      automatically into api url
+  - name: api_key
+    display: MSS Portal API Key
+    required: true
+    defaultvalue: null
+    type: 0
+    additionalinfo: null
+  - name: feed
+    display: Fetch indicators
+    required: false
+    defaultvalue: "true"
+    type: 8
+    additionalinfo: null
 description: This is the MSS Portal integration.
-display: MSS Portal - MDR (Partner Contribution)
+display: MSS Portal - MDR
 name: MSS Portal - MDR
 script:
   commands:
-  - arguments:
-    - description: Alert ID.
-      name: alert_id
-      required: true
-    description: Retrieve alert extra data by ID.
-    name: mssportal-get-alert
-    outputs:
-    - contextPath: MSSPortal.Alert.id
-      description: Alert ID.
-      type: String
-    - contextPath: MSSPorta.Alert.createdAt
-      description: Alert created time. Format is ISO8601 (i.e. '2020-04-30T10:35:00.000Z').
-      type: Date
-    - contextPath: MSSPorta.Alert.providerId
-      description: Alert description.
-      type: String
-    - contextPath: MSSPorta.Alert.providerCreatedAt
-      description: ID of the device involved in the alert.
-      type: date
-    - contextPath: MSSPorta.Alert.providerModifiedAt
-      description: IP Address of the device involved in the alert.
-      type: date
-    - contextPath: MSSPorta.Alert.providerAlertId
-      description: Location of the device involved in the alert.
-      type: number
-    - contextPath: MSSPorta.Alert.providerRaw
-      description: User involved in the alert.
-      type: String
-    - contextPath: MSSPorta.Alert.severity
-      type: string
-    - contextPath: MSSPorta.Alert.customerId
-      type: number
-    - contextPath: MSSPorta.Alert.investigationCaseId
-      type: number
-    - contextPath: MSSPorta.Alert.acknowledgedBy
-    - contextPath: MSSPorta.Alert.acknowledgedAt
-      type: date
-    - contextPath: MSSPorta.Alert.name
-      type: string
-  - arguments:
-    - description: Provider's ID ex)XSOAR_LOGRYTHME
-      name: provider_id
-      required: true
-    - description: Source alert created date . Format) 2022-07-18T13:44:36.769Z (ISO 8601))
-      name: created_at
-      required: true
-    - description: Source alert modified date Source.  Format ) 2022-07-18T13:44:36.769Z (ISO 8601))
-      name: modified_at
-      required: true
-    - description: Source alert ID
-      name: alert_id
-      required: true
-    - defaultValue: '''{}'''
-      description: Source raw data in JSON
-      name: raw_data
-      required: true
-    - description: Source alert's severity ex)HIGH
-      name: severity
-      required: true
-    - description: Customer's ID ex)123475
-      name: customer_id
-      required: true
-    - description: Source alert name
-      name: name
-      required: true
-    - description: Related case description
-      name: related_case_description
-    - description: Related case title
-      name: related_case_title
-    description: Create an alert using Portal's MDR API
-    name: mssportal-create-alert
-    outputs:
-    - contextPath: MSSPortal.Alert.id
-      description: The ID of the new alert
-      type: number
-    - contextPath: MSSPortal.Alert.createdAt
-      description: The creation time of the new alert
-      type: date
-    - contextPath: MSSPortal.Alert.providerId
-      description: The ID of the source system
-      type: string
-    - contextPath: MSSPortal.Alert.providerCreatedAt
-      description: The creation timestamp in the source system
-      type: date
-    - contextPath: MSSPortal.Alert.providerModifiedAt
-      description: The modification timestamp in the source system
-      type: date
-    - contextPath: MSSPortal.Alert.providerAlertId
-      description: The Id in the source system
-      type: string
-    - contextPath: MSSPortal.Alert.providerRaw
-      description: Raw json from the source system
-      type: string
-    - contextPath: MSSPortal.Alert.severity
-      description: The severity of the alert
-      type: string
-    - contextPath: MSSPortal.Alert.customerId
-      description: The ID of the related case
-      type: number
-    - contextPath: MSSPortal.Alert.investigationCaseId
-      description: The  ID of the related case
-      type: number
-    - contextPath: MSSPortal.Alert.acknowledgedBy
-      description: The alert was acknowledgedBy
-      type: string
-    - contextPath: MSSPortal.Alert.acknowledgedAt
-      description: The alert was acknowledgedAt
-      type: date
-    - contextPath: MSSPortal.Alert.name
-      description: Alert name
-      type: string
-  dockerimage: demisto/python3:3.8.3.9324
+    - arguments:
+        - description: Alert ID.
+          name: alert_id
+          required: true
+      description: Retrieve alert extra data by ID.
+      name: mssportal-get-alert
+      outputs:
+        - contextPath: MSSPortal.Alert.id
+          description: Alert ID.
+          type: String
+        - contextPath: MSSPortal.Alert.createdAt
+          description: Alert created time. Format is ISO8601 (i.e.
+            '2020-04-30T10:35:00.000Z').
+          type: Date
+        - contextPath: MSSPortal.Alert.providerId
+          description: Alert description.
+          type: String
+        - contextPath: MSSPortal.Alert.providerCreatedAt
+          description: ID of the device involved in the alert.
+          type: date
+        - contextPath: MSSPortal.Alert.providerModifiedAt
+          description: IP Address of the device involved in the alert.
+          type: date
+        - contextPath: MSSPortal.Alert.providerAlertId
+          description: Location of the device involved in the alert.
+          type: number
+        - contextPath: MSSPortal.Alert.providerRaw
+          description: User involved in the alert.
+          type: String
+        - contextPath: MSSPortal.Alert.severity
+          type: string
+        - contextPath: MSSPortal.Alert.customerId
+          type: number
+        - contextPath: MSSPortal.Alert.investigationCaseId
+          type: number
+        - contextPath: MSSPortal.Alert.acknowledgedBy
+        - contextPath: MSSPortal.Alert.acknowledgedAt
+          type: date
+        - contextPath: MSSPortal.Alert.name
+          type: string
+    - arguments:
+        - description: Case ID.
+          name: case_id
+          required: true
+      description: Acknowledge case to change the status to "IN_PROGRESS".
+      name: mssportal-acknowledge-case
+      outputs: []
+    - arguments:
+        - description: The Case ID
+          name: case_id
+          required: true
+        - description: The status of the case. Ex) PENDING, IN_PROGRESS, CLOSED;
+          name: status
+          required: false
+        - description: The Telus user accountable for the case. Ex) https://mssportal.telus.com/api/users/1
+          name: telusPrime
+          required: false
+        - description: The description of the case. Ex) This is a case description
+          name: description
+          required: false
+        - description: The caseTitle of the case. Ex) This is a case title.
+          name: caseTitle
+          required: false
+        - description: The priority of the case. Ex) VERY_LOW, LOW, MEDIUM, HIGH, CRITICAL
+          name: priority
+          required: false
+        - description: The resolution notes of the case. Ex) This is a resolution notes
+          name: resolutionNotes
+          required: false
+      description: Update a case.
+      name: mssportal-update-case
+      outputs: []
+    - arguments:
+        - description: Provider's ID ex) XSOAR_LOGRYTHME
+          name: provider_id
+          required: true
+        - description: Source alert created date . Format) 2022-07-18T13:44:36.769Z (ISO
+            8601))
+          name: created_at
+          required: true
+        - description: Source alert modified date Source.  Format )
+            2022-07-18T13:44:36.769Z (ISO 8601))
+          name: modified_at
+          required: true
+        - description: Source alert ID
+          name: alert_id
+          required: true
+        - defaultValue: "'{}'"
+          description: Source raw data in JSON
+          name: raw_data
+          required: true
+        - description: Source alert's severity ex)HIGH
+          name: severity
+          required: true
+        - description: Customer's ID ex)123475
+          name: customer_id
+          required: true
+        - description: Source alert name
+          name: name
+          required: true
+        - description: Related case description
+          name: related_case_description
+        - description: Related case title
+          name: related_case_title
+      description: Create an alert using Portal's MDR API
+      name: mssportal-create-alert
+      outputs:
+        - contextPath: MSSPortal.Alert.id
+          description: The ID of the new alert
+          type: number
+        - contextPath: MSSPortal.Alert.createdAt
+          description: The creation time of the new alert
+          type: date
+        - contextPath: MSSPortal.Alert.providerId
+          description: The ID of the source system
+          type: string
+        - contextPath: MSSPortal.Alert.providerCreatedAt
+          description: The creation timestamp in the source system
+          type: date
+        - contextPath: MSSPortal.Alert.providerModifiedAt
+          description: The modification timestamp in the source system
+          type: date
+        - contextPath: MSSPortal.Alert.providerAlertId
+          description: The Id in the source system
+          type: string
+        - contextPath: MSSPortal.Alert.providerRaw
+          description: Raw json from the source system
+          type: string
+        - contextPath: MSSPortal.Alert.severity
+          description: The severity of the alert
+          type: string
+        - contextPath: MSSPortal.Alert.customerId
+          description: The ID of the related case
+          type: number
+        - contextPath: MSSPortal.Alert.investigationCaseId
+          description: The  ID of the related case
+          type: number
+        - contextPath: MSSPortal.Alert.acknowledgedBy
+          description: The alert was acknowledgedBy
+          type: string
+        - contextPath: MSSPortal.Alert.acknowledgedAt
+          description: The alert was acknowledgedAt
+          type: date
+        - contextPath: MSSPortal.Alert.name
+          description: Alert name
+          type: string
+  dockerimage: demisto/python3:3.10.7.33922
   isremotesyncin: true
   isremotesyncout: true
   runonce: true
-  script: ''
+  script: ""
   subtype: python3
   type: python
 sourcemoduleid: MSS Portal
