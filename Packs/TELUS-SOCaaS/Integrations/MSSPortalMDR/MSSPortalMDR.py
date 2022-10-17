@@ -48,6 +48,18 @@ class Client(BaseClient):
 
         return self._http_request('get', f'/alerts/{alert_id}')
 
+    def get_cases(self, case_id: str) -> Dict[str, Any]:
+        """Get a specific MSSPortal case by id
+
+        :type case_id: ``str``
+        :param case_id: id of the case to acknowledge
+
+        :return: string from the API call
+        :rtype: ``str``
+        """
+
+        return self._http_request('get', f'/v1/cases/{id}')
+
     def update_case(self, case_id: str, data: Dict[str, Any]) -> str:
         """Updates a specific MSSPortal case by id
 
@@ -72,9 +84,56 @@ class Client(BaseClient):
 
         return self._http_request('put', f'/cases/{case_id}/acknowledgement', resp_type='text')
 
+    def get_playbook(self, playbook_id: str) -> Dict[str, Any]:
+        """Get a specific MSSPortal playbook by id
+
+        :type case_id: ``str``
+        :param case_id: id of the case to acknowledge
+
+        :return: string from the API call
+        :rtype: ``Dict[str, Any]``
+        """
+
+        return self._http_request('get', f'/v1/playbooks/{playbook_id}')
+
+    def get_tasks(self, task_id: str) -> Dict[str, Any]:
+        """Get a specific MSSPortal playbook by id
+
+        :type case_id: ``str``
+        :param case_id: id of the case to acknowledge
+
+        :return: string from the API call
+        :rtype: ``Dict[str, Any]``
+        """
+
+        return self._http_request('get', f'/v1/tasks/{task_id}')
+
+    def create_task(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """create a MSSPortal task
+
+        :type data: `Dict[str, Any]
+        :param data: information to create task
+
+        :return: string from the API call
+        :rtype: ``Dict[str, Any]``
+        """
+
+        return self._http_request('post', '/v1/tasks')
+
+    def create_case(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Create a specific MSSPortal case by id
+
+        :type case_id: ``str``
+        :param case_id: id of the case to acknowledge
+
+        :return: string from the API call
+        :rtype: ``str``
+        """
+
+        return self._http_request('post', '/v1/cases')
+
     def create_alert(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Gets a specific MSSPortal alert by id
-
         :type: dict containing the alert
         :param ``Dict[str, Any]``
 
@@ -83,6 +142,17 @@ class Client(BaseClient):
         """
 
         return self._http_request('post', '/alerts', json_data=data)
+
+    def create_playbook(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Gets a specific MSSPortal alert by id
+        :type: dict containing the alert
+        :param ``Dict[str, Any]``
+
+        :return: dict containing the alert as returned from the API
+        :rtype: ``Dict[str, Any]``
+        """
+
+        return self._http_request('post', '/v1/playbooks', data)
 
 
 ''' HELPER FUNCTIONS '''
@@ -321,6 +391,446 @@ def create_alert_command(client: Client, args: Dict[str, Any]) -> CommandResults
     )
 
 
+def get_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-get-case command: Returns a MSSPortal case
+
+    Args:
+        client(Client): MSSPortal client to use
+        case_id: Case ID to return
+
+    Returns:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains an alert
+
+
+    Context Outputs:
+        id (int): Alert ID.
+        status(str): status of case example: PENDING
+        telusPrime(str): The Telus user accountable for the case
+        description(str): The description of the case
+        caseTitle(str): The caseTitle of the case
+        priority(str): The priority of the case
+        resolutionNotes(str): resolution notes
+        customerId(int): The identifiant of the related customer
+        caseSource(str): Indicate if is a Cortex case or created manually
+        alertName(str): Description for Cortex created cases and Alert Name for manually created cases
+        id(int): The identifiant of the case
+        createdAt(date): the creation time of the case
+        createdBy(str): The case creator
+        updatedAt(date): The last modification time of the case
+        updatedBy(str): The last case updator
+        serviceComponent(str): The component of service for the case ex SOC
+        incident(boolean) Indicates if the case has an incident (TRUE OR FALSE)
+        incidentTime(date): The incident time of the case
+        incidentBy(str): The user who set the case as incident
+        nbTelusPendingTasks(int): Number of pending tasks accountable for TELUS
+        nbTelusUnreadTaskComments(int): Number of task comments unread by TELUS
+        nbCustomerClosedTasks(int): Number of closed tasks accountable for Customer
+        nbCustomerTasks(int): Number of tasks accountable for Customer
+        resolvedAt(date): Resolution time of the task
+        resolvedBy(str):User who resolved the task
+        sourceCreatedAt(date): The creation time from the source (optional)
+        firstAcknowledgmentAt(date): The time of the first acknowledgement (optional)
+        firstAssignmentAt(date): The time of the first assignment (optional)
+        firstResolutionAt(date): The first resolution time
+        firstCustomerTaskCreatedAt(date): The time the first customer task was created (optional)
+        firstTelusTaskResolvedAt(date): The time the first TELUS task was resolved (optional)
+        firstCustomerIncidentTaskCreatedAt(date): The time the first customer task was created (optional)
+        firstTelusIncidentTaskResolvedAt(date): The time the first TELUS task was resolved after promoting as incident (optional)
+    """
+
+    case_id = args.get('case_id', None)
+    if not case_id:
+        raise ValueError('case_id not specified')
+
+    case = client.get_cases(case_id)
+
+    # tableToMarkdown() is defined is CommonServerPython.py and is used very
+    # often to convert lists and dicts into a human readable format in markdown
+    readable_output = tableToMarkdown(f'MSSPortal Case {case_id}', case)
+
+    return CommandResults(
+        readable_output=readable_output,
+        outputs_prefix='MSSPortal.Case',
+        outputs_key_field='id',
+        outputs=case
+    )
+
+
+def get_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-get-playbook command: Returns a MSSPortal playbook
+
+    Args:
+        client(Client): MSSPortal client to use
+        playbook_id:  playbook ID to return
+
+    Returns:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains an alert
+
+
+    Context Outputs:
+        id(int): Playbook id
+        createdAt(date): The creation time
+        createdBy(str): The principal who created
+        updatedAt(date): The last modification time
+        updatedBy(str): The principal who last modifed
+        name(str): The name of the playbook
+        description(str): The description of the playbook
+        playbookTasks(unknown): undefined
+    """
+
+    playbook_id = args.get('playbook_id', None)
+    if not playbook_id:
+        raise ValueError('playbook_id not specified')
+
+    playbook = client.get_playbook(playbook_id)
+
+    # tableToMarkdown() is defined is CommonServerPython.py and is used very
+    # often to convert lists and dicts into a human readable format in markdown
+    readable_output = tableToMarkdown(f'MSSPortal Case {playbook_id}', playbook)
+
+    return CommandResults(
+        readable_output=readable_output,
+        outputs_prefix='MSSPortal.Playbook',
+        outputs_key_field='playbook_id',
+        outputs=playbook
+    )
+
+
+def create_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-create-playbook command: Returns a MSSPortal playbook
+
+    Args:
+        client(Client): MSSPortal client to use
+        name: playbook name
+        description: playbook description
+
+    Returns:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains an alert
+
+    Context Outputs:
+        id(int): Playbook id
+        createdAt(date): The creation time
+        createdBy(str): The principal who created
+        updatedAt(date): The last modification time
+        updatedBy(str): The principal who last modified
+        name(str): The name of the playbook
+        description(str): The description of the playbook
+        playbookTasks(unknown): undefined
+    """
+    name = args.get('name')
+    description = args.get('description')
+
+    json_data: Dict[str, Any] = {}
+
+    json_data['name'] = name
+    json_data['description'] = description
+
+    playbook = client.create_playbook(json_data)
+
+    readable_output = tableToMarkdown(f'MSSPortal Alert {name}', playbook)
+
+    return CommandResults(
+        readable_output=readable_output,
+        outputs_prefix='MSSPortal.Playbook',
+        outputs_key_field='name',
+        outputs=playbook
+    )
+
+
+def get_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-get-task command: Returns a MSSPortal task
+
+    Args:
+        client(Client): MSSPortal client to use
+        id:  Task Id
+
+
+    Returns:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains an alert
+    Context Outputs:
+        id(int): Playbook id
+        name(str): name of the task
+        description(str):description of the task
+        caseId(int): case no.
+        customerId(int): undefined
+        accountable(string): who is accountable TELUS or customer
+        status(str): status of task
+        acknowledged(boolean): undefined
+        priority(string): priority of task
+        phase(str): undefined
+        telusPrime(str): The Telus user accountable for the case
+        dueDate(date): due date of case
+        createdAt(date): time of creation
+        createdBy(date): who created the task
+        updatedAt(date): last updated
+        updatedBy(date): undefined
+        acknowledgedAt(string): undefined
+        acknowledgedBy(string): undefined
+        caseTitle(string): undefined
+        abouttoExpireThresholdInDays(unknown)
+        playbookName(str): name of playbook
+        comments(undefined): undefined
+        unreadCommentsByCustomer(int): no. of unread comments by customer
+        unreadCommentsByTelus(int): no. of unread comments by TELUS
+        modifiedbyTelus(boolean): notify customer when TELUS updates task (true or false)
+        resolvedAt(date):  Resolution time of the task
+        resolvedBy(str): undefined
+    """
+
+    id = args.get('id')
+    name = args.get('name')
+    description = args.get('description')
+    caseId = args.get('caseId')
+    accountable = args.get('accountable')
+    phase = args.get("phase")
+    priority = args.get("priority")
+    status = args.get("status")
+    telusPrime = args.get("telusPrime")
+    createdAt_from = args.get("createdAt_from")
+    createdAt_to = args.get('createdAt_to')
+    dueDate = args.get('dueDate')
+    customerId = args.get('customerId')
+    caseTitle = args.get('caseTitle')
+    searchText = args.get('searchText')
+    resolvedAt_from = args.get('resolvedAt_from')
+    resolvedAt_to = args.get('resolvedAt_to')
+    resolvedBy = args.get('resolvedBy')
+    sort = args.get('sort')
+    offset = args.get('offset')
+    limit = args.get('limit')
+
+    json_data = {
+        "id": id,
+        "name": name,
+        'description': description,
+        'caseId': caseId,
+        'accountable': accountable,
+        'phase': phase,
+        'priority': priority,
+        'status': status,
+        'telusPrime': telusPrime,
+        'createdAt_from': createdAt_from,
+        'createdAt_to': createdAt_to,
+        'dueDate': dueDate,
+        'customerId': customerId,
+        'caseTitle': caseTitle,
+        'searchText': searchText,
+        'resolvedAt_from': resolvedAt_from,
+        'resolvedAt_to': resolvedAt_to,
+        'resolvedBy': resolvedBy,
+        'sort': sort,
+        'offset': offset,
+        'limit': limit
+    }
+    task = client.create_task(json_data)
+
+    # INTEGRATION DEVELOPER TIP
+    # We want to convert the "created" time from timestamp(s) to ISO8601 as
+    # Cortex XSOAR customers and integrations use this format by default
+
+    # tableToMarkdown() is defined is CommonServerPython.py and is used very
+    # often to convert lists and dicts into a human readable format in markdown
+
+    readable_output = tableToMarkdown(f'MSSPortal Alert {id}', task)
+
+    return CommandResults(
+        readable_output=readable_output,
+        outputs_prefix='MSSPortal.Task',
+        outputs_key_field='id',
+        outputs=task
+    )
+
+
+def create_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-create-task command: Returns a MSSPortal task
+
+    Args:
+        client(Client): MSSPortal client to use
+        id:  Task Id
+        name: Task name
+        description: Task description
+        caseId: Id of the case
+        accountable: Telus user accountable for task example: TELUS
+        telusPrime: The Telus user accountable for the case example: https://mssportal.telus.com/api/users/1
+        priority: The priority of the task ex HIGH, MEDIUM, LOW
+        phase: The phase of the task ex Investigate
+        status: The status of the task ex pending
+        dueDate: The due date of the task
+        aboutToExpireThresholdInDays: The threshold in days to notify when task will expire
+        modifiedByTelus: Should the customer be notified when TELUS modifies a task (ex false or true)
+
+    Returns:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains an alert
+
+    Context Outputs:
+        id(int): Playbook id
+        name(str): name of the task
+        description(str): description of the task
+        caseId(int): case no.
+        customerId(int): undefined
+        accountable(string): who is accountable TELUS or customer
+        status(str): status of task
+        acknowledged(boolean): undefined
+        priority(string): priority of task
+        phase(str): undefined
+        telusPrime(str): The Telus user accountable for the case
+        dueDate(date): due date of case
+        createdAt(date): time of creation
+        createdBy(date): who created the task
+        updatedAt(date): last updated
+        updatedBy(date): undefined
+        acknowledgedAt(string): undefined
+        acknowledgedBy(string): undefined
+        caseTitle(string): undefined
+        abouttoExpireThresholdInDays()
+        playbookName(str): name of playbook
+        comments(undefined): undefined
+        unreadCommentsByCustomer(int): no. of unread comments by customer
+        unreadCommentsByTelus(int): no. of unread comments by TELUS
+        modifiedbyTelus(boolean): notify customer when TELUS updates task (true or false)
+        resolvedAt(date):  Resolution time of the task
+        resolvedBy(str): undefined
+
+
+    """
+    name = args.get('name')
+    description = args.get('description')
+    caseId = args.get('caseId')
+    accountable = args.get('accountable')
+    telusPrime = args.get("telusPrime")
+    status = args.get("status")
+    phase = args.get("phase")
+    dueDate = args.get('dueDate')
+    aboutToExpireThresholdInDays = args.get('aboutToExpireThresholdInDays')
+    modifiedByTelus = args.get('modifiedByTelus')
+
+    json_data = {
+        "name": name,
+        "description": description,
+        "caseId": caseId,
+        "accountable": accountable,
+        'telusPrime': telusPrime,
+        'status': status,
+        'phase': phase,
+        'dueDate': dueDate,
+        'aboutToExpireThresholdInDay': aboutToExpireThresholdInDays,
+        'modifiedByTelus': modifiedByTelus
+    }
+    task = client.create_task(json_data)
+
+    readable_output = tableToMarkdown(f'MSSPortal Alert {caseId}', task)
+
+    return CommandResults(
+        readable_output=readable_output,
+        outputs_prefix='MSSPortal.Task',
+        outputs_key_field='caseId',
+        outputs=task
+    )
+
+
+def create_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-get-alert command: Returns a MSSPortal alert
+
+    Args:
+        client(Client): MSSPortal client to use
+        status: customer ID to return
+        telusPrime: Telus user accountable for case
+        description: description of case
+        caseTitle: Title of case
+        priority: Priority of case (HIGH, MEDIUM, LOW)
+        resolutionNotes: resolution notes of the case
+        customer_id
+        caseSource
+        alertName
+        serviceComponent
+
+
+    Returns:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains an alert
+
+    Context Outputs:
+        status(str): status of case
+        telusPrime(str): telus user accountable for case
+        description(str): description of case
+        caseTitle(str): title of case
+        priority(str): severity of case (HIGH, MEIDUM, LOW )
+        resolutionNotes(str): resolution notes
+        customerId(unknown): undefined
+        caseSource(unknown): undefined
+        alertName(str): undefined
+        id(int): id of case
+        createdAt(date): date of creation
+        createdBy(str): who created the case
+        updatedAt(date): modification date
+        updatedBy(str): undefined
+        serviceComponent(unknown): undefined
+        incident(boolean): true incident (true or false)
+        incidentTime(date): undefined
+        nbTelusPendingTasks(int): no. of pending tasks for TELUS
+        nbTelusUnreadTaskComments(int): no. of unread tasks
+        nbCustomerClosedTasks(int): closed customer tasks
+        nbCustomerTasks(Int): tasks customer responsible for
+        resolvedAt(date): undefined
+        resolvedBy(str): undefined
+        sourceCreatedAt(date): undefined
+        firstAcknowledgmentAt(date): undefined
+        firstAssignmentAt(date): undefined
+        firstResolutionAt(unknown): undefined
+        firstCustomerTaskCreatedAt(unknown): undefined
+        firstTelusTaskResolvedAt(unknown): undefined
+        firstCustomerIncidentTaskCreatedAt(unknown): undefined
+        firstTelusIncidentTaskResolvedAt(unknown): undefined
+    """
+
+    status = args.get('status')
+    telusPrime = args.get('telusPrime')
+    description = args.get('description')
+    caseTitle = args.get('caseTitle')
+    priority = args.get('priority ')
+    resolutionNotes = args.get('resolutionNotes')
+    customer_id = args.get('customer_id')
+    caseSource = args.get('caseSource')
+    alertName = args.get('alertName')
+    serviceComponent = args.get('serviceComponent ')
+
+    json_data = {
+        "status": status,
+        "telusPrime": telusPrime,
+        'description': description,
+        'caseTitle': caseTitle,
+        'priority': priority,
+        'resolutionNotes': resolutionNotes,
+        'customer_id': customer_id,
+        'caseSource': caseSource,
+        'alertName': alertName,
+        'serviceComponent': serviceComponent
+    }
+
+    case = client.create_case(json_data)
+
+    # INTEGRATION DEVELOPER TIP
+    # We want to convert the "created" time from timestamp(s) to ISO8601 as
+    # Cortex XSOAR customers and integrations use this format by default
+
+    # tableToMarkdown() is defined is CommonServerPython.py and is used very
+    # often to convert lists and dicts into a human readable format in markdown
+
+    readable_output = tableToMarkdown(f'MSSPortal Case {customer_id}', case)
+
+    return CommandResults(
+        readable_output=readable_output,
+        outputs_prefix='MSSPortal.Case',
+        outputs_key_field='customer_id ',
+        outputs=case
+    )
+
+
 ''' MAIN FUNCTION '''
 
 
@@ -370,12 +880,24 @@ def main() -> None:
 
         elif demisto.command() == 'mssportal-get-alert':
             return_results(get_alert_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-get-case':
+            return_results(get_alert_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-get-playbook':
+            return_results(get_playbook_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-get-task':
+            return_results(get_task_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-update-case':
             return_results(update_case_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-acknowledge-case':
             return_results(acknowledge_case_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-create-alert':
             return_results(create_alert_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-create_case':
+            return_results(create_case_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-create-playbook':
+            return_results(create_playbook_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-create-task':
+            return_results(create_task_command(client, demisto.args()))
 
     # Log exceptions and return errors
     except Exception as e:
