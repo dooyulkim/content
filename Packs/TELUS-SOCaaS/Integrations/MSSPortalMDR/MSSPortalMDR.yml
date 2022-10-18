@@ -20,40 +20,41 @@ commonfields:
 name: MSS Portal - MDR
 display: MSS Portal - MDR (Partner Contribution)
 configuration:
-  - name: url
-    display: Server URL (e.g. 'https://tssapi-preprod.telus.com)
-    required: true
-    defaultvalue: https://tssapi-preprod.telus.com
-    type: 0
-    additionalinfo: null
-  - name: api_version
-    display: Currently, we use v1 of MSS Portal API
-    required: true
-    defaultvalue: v1
-    type: 0
-    additionalinfo: This parameter does not have any effect since v1 will be added
-      automatically into api url
-  - name: api_key
-    display: MSS Portal API Key
-    required: true
-    defaultvalue: null
-    type: 0
-    additionalinfo: null
-  - display: Use system proxy settings
-    name: proxy
-    required: false
-    type: 8
-  - name: feed
-    display: Fetch indicators
-    required: false
-    defaultvalue: "true"
-    type: 8
-    additionalinfo: null
+- name: url
+  display: Server URL (e.g. 'https://tssapi-preprod.telus.com)
+  required: true
+  defaultvalue: https://tssapi-preprod.telus.com
+  type: 0
+  additionalinfo:
+- name: api_version
+  display: Currently, we use v1 of MSS Portal API
+  required: true
+  defaultvalue: v1
+  type: 0
+  additionalinfo: This parameter does not have any effect since v1 will be added automatically into api url
+- name: api_key
+  display: MSS Portal API Key
+  required: true
+  defaultvalue:
+  type: 0
+  additionalinfo:
+- display: Use system proxy settings
+  name: proxy
+  required: false
+  type: 8
+  defaultvalue: "true"
+  additionalinfo:
+- name: feed
+  display: Fetch indicators
+  required: false
+  defaultvalue: "true"
+  type: 8
+  additionalinfo:
 script:
   commands:
   - deprecated: false
     description: 'mssportal-acknowledge-case command: Returns a MSSPortal case'
-    name: mssp_acknowledge_case_command
+    name: mssportal-acknowledge-case
     arguments:
     - name: case_id
       isArray: false
@@ -63,8 +64,8 @@ script:
       default: false
     outputs: []
   - deprecated: false
-    description: 'mssportal-get-alert command: Returns a MSSPortal alert'
-    name: mssp_create_alert_command
+    description: "mssportal-create-alert command: Returns a MSSPortal alert"
+    name: mssportal-create-alert
     arguments:
     - name: provider_id
       isArray: false
@@ -95,7 +96,7 @@ script:
       description: Source raw data in JSON
       required: true
       secret: false
-      default: false
+      default: true
     - name: severity
       isArray: false
       description: ID to return
@@ -189,7 +190,7 @@ script:
       type: Unknown
   - deprecated: false
     description: 'mssportal-create-case command: Returns a MSSPortal alert'
-    name: mssp_create_case_command
+    name: mssportal-create-case
     arguments:
     - name: status
       isArray: false
@@ -229,13 +230,13 @@ script:
       default: false
     outputs:
     - contextPath: MSSPortal.Case.status
-      description: status of the alert 
+      description: status of the alert
       type: Number
     - contextPath: MSSPortal.Case.telusPrime
       description: telus user accountable for case
       type: String
     - contextPath: MSSPortal.Case.description
-      description: description of the 
+      description: description of the
       type: String
     - contextPath: MSSPortal.Case.caseTitle
       description: Title of the case
@@ -259,16 +260,16 @@ script:
       description: id of the case
       type: Number
     - contextPath: MSSPortal.Case.createdAt
-      description: Time case was created at 
+      description: Time case was created at
       type: date
     - contextPath: MSSPortal.Case.createdBy
       description: modifier of the case
       type: String
     - contextPath: MSSPortal.Case.updatedAt
-      description: time of most recent update 
+      description: time of most recent update
       type: date
     - contextPath: MSSPortal.Case.updatedBy
-      description: who the case was updated by 
+      description: who the case was updated by
       type: string
     - contextPath: MSSPortal.Case.serviceComponent
       description: undefined
@@ -289,16 +290,16 @@ script:
       description: closed tasks
       type: number
     - contextPath: MSSPortal.Case.nbCustomerTasks
-      description: customer tasks 
+      description: customer tasks
       type: number
     - contextPath: MSSPortal.Case.resolvedAt
       description: when the task was resolved
       type: date
     - contextPath: MSSPortal.Case.resolvedBy
-      description: who resolved the task 
+      description: who resolved the task
       type: string
     - contextPath: MSSPortal.Case.sourceCreatedAt
-      description: undefined 
+      description: undefined
       type: unknown
     - contextPath: MSSPortal.Case.firstAcknowledgmentAt
       description: task was first acknowledged
@@ -316,25 +317,25 @@ script:
       description: unknown
       type: undefined
     - contextPath: MSSPortal.Case.firstTelusIncidentTaskResolvedAt
-      description: first time telus resolved task 
+      description: first time telus resolved task
       type: date
     - contextPath: MSSPortal.Case.firstTelusTaskResolvedAt
-      description: time first task resolved at by TELUS 
-      type: date 
+      description: time first task resolved at by TELUS
+      type: date
   - deprecated: false
     description: 'mssportal-create-playbook command: Returns a MSSPortal playbook'
-    name: mssp_create_playbook_command
+    name: mssportal-create-playbook
     arguments:
     - name: name
       isArray: false
       description: playbook name
-      required: true
+      required: false
       secret: false
       default: false
     - name: description
       isArray: false
       description: playbook description
-      required: true
+      required: false
       secret: false
       default: false
     outputs:
@@ -346,7 +347,7 @@ script:
       type: string
     - contextPath: MSSPortal.Playbook.createdAt
       description: time of creation
-      type: date 
+      type: date
     - contextPath: MSSPortal.Playbook.createdBy
       description: who was playbook was created by
       type: string
@@ -364,7 +365,7 @@ script:
       type: string
   - deprecated: false
     description: 'mssportal-create-task command: Returns a MSSPortal task'
-    name: mssp_create_task_command
+    name: mssportal-create-task
     arguments:
     - name: id
       isArray: false
@@ -381,7 +382,7 @@ script:
     - name: description
       isArray: false
       description: Task description
-      required: true
+      required: false
       secret: false
       default: false
     - name: caseId
@@ -405,7 +406,7 @@ script:
     - name: priority
       isArray: false
       description: The priority of the task ex HIGH, MEDIUM, LOW
-      required: false 
+      required: false
       secret: false
       default: false
     - name: phase
@@ -423,19 +424,19 @@ script:
     - name: dueDate
       isArray: false
       description: The due date of the task
-      required: true
+      required: false
       secret: false
       default: false
     - name: aboutToExpireThresholdInDays
       isArray: false
       description: The threshold in days to notify when task will expire
-      required: true
+      required: false
       secret: false
       default: false
     - name: modifiedByTelus
       isArray: false
       description: Should the customer be notified when TELUS modifies a task (ex false or true)
-      required: true
+      required: false
       secret: false
       default: false
     outputs:
@@ -456,7 +457,7 @@ script:
       type: Number
     - contextPath: MSSPortal.Task.accountable
       description: who is accountable TELUS or customer
-      type: String 
+      type: String
     - contextPath: MSSPortal.Task.status
       description: status of task
       type: String
@@ -519,7 +520,7 @@ script:
       type: String
   - deprecated: false
     description: 'mssportal-get-alert command: Returns a MSSPortal alert'
-    name: mssp_get_alert_command
+    name: mssportal-get-alert
     arguments:
     - name: alert_id
       isArray: false
@@ -568,8 +569,103 @@ script:
       description: undefined
       type: Unknown
   - deprecated: false
-    description: 'mssportal-get-case command: Returns a MSSPortal case'
-    name: mssp_get_case_command
+    description: "mssportal-find-playbook command: Returns a MSSPortal Playbook"
+    name: mssportal-find-playbook
+    arguments:
+    - name: playbook_id
+      isArray: false
+      description: playbook id
+      required: false
+      secret: false
+      default: false
+    - name: createdAt_from
+      isArray: false
+      description: Start time of source playbook creation date . Format) 2022-07-18T13:44:36.769Z (ISO
+      required: false
+      secret: false
+      default: false
+    - name: createdAt_to
+      isArray: false
+      description: End time of source playbook creation date . Format) 2022-07-18T13:44:36.769Z (ISO
+      required: false
+      secret: false
+      default: false
+    - name: updatedAt_to
+      isArray: false
+      description: Start time of playbook update . Format) 2022-07-18T13:44:36.769Z (ISO
+      required: false
+      secret: false
+      default: false
+    - name: updatedAt_from
+      isArray: false
+      description: Start time of playbook update. Format) 2022-07-18T13:44:36.769Z (ISO
+      required: false
+      secret: false
+      default: false
+    - name: updatedAt_to
+      isArray: false
+      description: End time of playbook update. Format) 2022-07-18T13:44:36.769Z (ISO
+      required: false
+      secret: false
+      default: false
+    - name: searchText
+      isArray: false
+      description: keyword
+      required: false
+      secret: false
+      default: false
+    - name: sort
+      isArray: false
+      description: undefined
+      required: false
+      secret: false
+      default: false
+    - name: offset
+      isArray: false
+      description: undefined
+      required: false
+      secret: false
+      default: true
+    - name: limit
+      isArray: false
+      description: limit number of playbook results
+      required: false
+      secret: false
+      default: true 
+    outputs:
+    - contextPath: MSSPortal.Playbook.totalPages
+      description: undefined
+      type: integer
+    - contextPath: MSSPortal.Playbook.totalElements
+      description: total number of Playbooks
+      type: integer
+    - contextPath: MSSPortal.Playbook.number
+      description: undefined
+      type: integer
+    - contextPath: MSSPortal.Playbook.sort
+      description: unknown
+      type: unknown
+    - contextPath: MSSPortal.Playbook.content
+      description: Playbook information (id, name, description, caseId, customerId, status, comments, etc)
+      type: unknown
+    - contextPath: MSSPortal.Playbook.numberOfElements
+      description: undefined
+      type: integer
+    - contextPath: MSSPortal.Playbook.pageable
+      description: undefined
+      type: unknown
+    - contextPath: MSSPortal.Playbook.first
+      description: undefined
+      type: boolean
+    - contextPath: MSSPortal.Playbook.last
+      description: undefined
+      type: boolean
+    - contextPath: MSSPortal.Playbook.empty
+      description: undefined
+      type: boolean
+  - deprecated: false
+    description: "mssportal-get-case command: Returns a MSSPortal case"
+    name: mssportal-get-case
     arguments:
     - name: case_id
       isArray: false
@@ -582,7 +678,7 @@ script:
       description: Alert ID.
       type: Number
     - contextPath: MSSPortal.Case.status
-      description: 'status of case example: PENDING'
+      description: "status of case example: PENDING"
       type: String
     - contextPath: MSSPortal.Case.telusPrime
       description: The Telus user accountable for the case
@@ -675,12 +771,12 @@ script:
       description: The time the first TELUS task was resolved after promoting as incident (optional)
       type: Unknown
   - deprecated: false
-    description: 'mssportal-get-playbook command: Returns a MSSPortal playbook'
-    name: mssp_get_playbook_command
+    description: "mssportal-get-playbook command: Returns a MSSPortal playbook"
+    name: mssportal-get-playbook
     arguments:
     - name: playbook_id
       isArray: false
-      description: playbook ID to return
+      description: "playbook ID to return"
       required: true
       secret: false
       default: false
@@ -693,7 +789,7 @@ script:
       type: Unknown
     - contextPath: MSSPortal.Playbook.createdBy
       description: The principal who created
-      type: String
+      type: string
     - contextPath: MSSPortal.Playbook.updatedAt
       description: The last modification time
       type: Unknown
@@ -710,13 +806,13 @@ script:
       description: undefined
       type: Unknown
   - deprecated: false
-    description: 'mssportal-get-task command: Returns a MSSPortal task'
-    name: mssp_get_task_command
+    description: "mssportal-get-task command: Returns a MSSPortal task"
+    name: mssportal-get-task
     arguments:
-    - name: id
+    - name: task_id
       isArray: false
-      description: "Task Id"
-      required: false
+      description: Task Id
+      required: true
       secret: false
       default: false
     outputs:
@@ -737,7 +833,7 @@ script:
       type: Number
     - contextPath: MSSPortal.Task.accountable
       description: who is accountable TELUS or customer
-      type: String 
+      type: String
     - contextPath: MSSPortal.Task.status
       description: status of task
       type: String
@@ -800,7 +896,7 @@ script:
       type: String
   - deprecated: false
     description: "mssportal-update-case command: Returns a MSSPortal case\n    Args:\n        client(Client): MSSPortal client to use\n        case_id: Case ID\n        status: The status of the case. Ex) PENDING, IN_PROGRESS, CLOSED;\n        telusPrime: The Telus user accountable for the case. Ex) https://mssportal.telus.com/api/users/1\n        description: The description of the case. Ex) This is a case description\n        caseTitle: The caseTitle of the case. Ex) This is a case title.\n        priority: The priority of the case. Ex) VERY_LOW, LOW, MEDIUM, HIGH, CRITICAL\n        resolutionNotes: The resolution notes of the case. Ex) This is a resolution notes\n    Returns:\n        A ``CommandResults`` object that is then passed to ``return_results``,\n        that contains the result of case update\n    "
-    name: mssp_update_case_command
+    name: mssportal-update-case
     arguments:
     - name: case_id
       isArray: false
@@ -840,16 +936,193 @@ script:
       default: false
     - name: resolutionNotes
       isArray: false
-      description: "The resolution notes of the case. Ex) This is a resolution notes\n    Returns:"
+      description: |-
+        The resolution notes of the case. Ex) This is a resolution notes
+            Returns:
       required: true
       secret: false
       default: false
     outputs: []
-  dockerimage: demisto/python3:3.10.7.33922
+  - deprecated: false
+    description: "mssportal-resolve-case command:  resolve case in MSS Portal"
+    name: mssportal-resolve-case
+    arguments:
+    - name: case_id
+      isArray: false
+      description: Case ID
+      required: true
+      secret: false
+      default: false
+    outputs: []
+  - deprecated: false
+    description: mssportal-find-tasks find tasks
+    name: mssportal-find-tasks
+    arguments:
+    - name: id
+      isArray: false
+      description: task id
+      required: false
+      secret: false
+      default: false
+    - name: name
+      isArray: false
+      description: name of task
+      required: false
+      secret: false
+      default: false
+    - name: description
+      description: description of task
+      required: false
+      isArray: false
+      defaultValue: ""
+      predefined:
+      - ""
+    - name: caseId
+      isArray: false
+      description: id of case
+      required: false
+      secret: false
+      default: false
+    - name: accountable
+      isArray: false
+      description: TELUS or customer
+      required: false
+      secret: false
+      default: false
+    - name: phase
+      description: available values CONTAIN, INVESTIGATE, ERADICATE, LESSONS_LEARNED
+      required: false
+      isArray: false
+      defaultValue: ""
+      predefined:
+      - ""
+    - name: priority
+      isArray: false
+      description: available values critical, high, medium, low
+      required: false
+      secret: false
+      default: false
+    - name: status
+      isArray: false
+      description: available values pending, in_progress, closed
+      required: false
+      secret: false
+      default: false
+    - name: telusPrime
+      isArray: false
+      description: TELUS member accountable for task
+      required: false
+      secret: false
+      default: false
+    - name: createdAt_from
+      isArray: false
+      description: Start time of source task creation date . Format) 2022-07-18T13:44:36.769Z (ISO
+      required: false
+      secret: false
+      default: false
+    - name: createdAt_to
+      isArray: false
+      description: End time of source task creation date . Format) 2022-07-18T13:44:36.769Z (ISO
+      required: false
+      secret: false
+      default: false
+    - name: dueDate
+      isArray: false
+      description: dueDate of task
+      required: false
+      secret: false
+      default: false
+    - name: customerId
+      isArray: false
+      description: Customer's ID ex)123475
+      required: false
+      secret: false
+      default: false
+    - name: caseTile
+      isArray: false
+      description: title of case
+      required: false
+      secret: false
+      default: false
+    - name: searchText
+      isArray: false
+      description: keyword
+      required: false
+      secret: false
+      default: false
+    - name: resolvedAt_from
+      isArray: false
+      description: Start time of task resolution
+      required: false
+      secret: false
+      default: false
+    - name: resolvedAt_to
+      isArray: false
+      description: End time of task resolution
+      required: false
+      secret: false
+      default: false
+    - name: resolvedBy
+      isArray: false
+      description: undefined
+      required: false
+      secret: false
+      default: false
+    - name: sort
+      isArray: false
+      description: undefined
+      required: false
+      secret: false
+      default: false
+    - name: offset
+      isArray: false
+      description: undefined
+      required: false
+      secret: false
+      default: true
+    - name: limit
+      isArray: false
+      description: undefined
+      required: false
+      secret: false
+      default: true
+    outputs:
+    - contextPath: MSSPortal.Task.totalPages
+      description: undefined
+      type: integer
+    - contextPath: MSSPortal.Task.totalElements
+      description: total number of tasks
+      type: integer
+    - contextPath: MSSPortal.Task.number
+      description: undefined
+      type: integer
+    - contextPath: MSSPortal.Task.sort
+      description: unknown
+      type: unknown
+    - contextPath: MSSPortal.Task.content
+      description: task information (id, name, description, caseId, customerId, status, comments, etc)
+      type: unknown
+    - contextPath: MSSPortal.Task.numberOfElements
+      description: undefined
+      type: integer
+    - contextPath: MSSPortal.Task.pageable
+      description: undefined
+      type: unknown
+    - contextPath: MSSPortal.Task.first
+      description: undefined
+      type: boolean
+    - contextPath: MSSPortal.Task.last
+      description: undefined
+      type: boolean
+    - contextPath: MSSPortal.Task.empty
+      description: undefined
+      type: boolean
+  dockerimage: demisto/python3:3.10.5.31797
   isremotesyncin: true
   isremotesyncout: true
   runonce: true
   script: ""
   subtype: python3
   type: python
-sourcemoduleid: MSS Portal
+tests:
+- No tests (auto formatted)

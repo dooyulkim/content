@@ -1,0 +1,53 @@
+{
+    "totalPages": 0,
+    "totalElements": 0,
+    "number": 0,
+    "sort": {
+      "empty": true,
+      "sorted": true,
+      "unsorted": true
+    },
+    "size": 0,
+    "content": [
+      {
+        "id": 0,
+        "createdAt": "2022-10-18T02:53:11.489Z",
+        "createdBy": "string",
+        "updatedAt": "2022-10-18T02:53:11.489Z",
+        "updatedBy": "string",
+        "name": "Playbook name",
+        "description": "Playbook description",
+        "playbookTasks": [
+          {
+            "id": 0,
+            "createdAt": "2022-10-18T02:53:11.489Z",
+            "createdBy": "string",
+            "updatedAt": "2022-10-18T02:53:11.489Z",
+            "updatedBy": "string",
+            "name": "Playbook task name",
+            "description": "Playbook task description",
+            "accountable": "CUSTOMER",
+            "priority": "CRITICAL",
+            "phase": "INVESTIGATION",
+            "dueDatePeriod": 0
+          }
+        ]
+      }
+    ],
+    "numberOfElements": 0,
+    "pageable": {
+      "sort": {
+        "empty": true,
+        "sorted": true,
+        "unsorted": true
+      },
+      "offset": 0,
+      "pageNumber": 0,
+      "pageSize": 0,
+      "paged": true,
+      "unpaged": true
+    },
+    "first": true,
+    "last": true,
+    "empty": true
+  }
