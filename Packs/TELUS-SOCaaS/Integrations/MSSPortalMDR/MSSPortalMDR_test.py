@@ -57,8 +57,7 @@ import io
 import json
 
 from CommonServerPython import tableToMarkdown
-from MSSPortalMDR import Client, get_alert_command, update_case_command, acknowledge_case_command, find_playbook_command, resolve_case_command, create_playbook_command, create_case_command, get_task_command
-# from MSSPortalMDR import Client, create_alert_command, get_alert_command
+from MSSPortalMDR import Client, get_alert_command, update_case_command, acknowledge_case_command, find_playbook_command, resolve_case_command, create_playbook_command, create_case_command, get_task_command, find_task_command, get_case_command
 
 URL = "https://portalservice.url"
 
@@ -177,5 +176,31 @@ def test_get_task(mocker):
     mocker.patch.object(Client, 'get_task', return_value=result_task)
     results = get_task_command(client, args={'task_id': '12'})
     human_readable = tableToMarkdown('MSSPortal Task 12', result_task)
+    assert results.readable_output == human_readable
+    
+    
+def test_find_task(mocker):
+    
+    client = Client(base_url=URL)
+    result_task = util_load_json('./test_data/find_task_result.json')
+    mocker.patch.object(Client, 'find_task', return_value=result_task)
+    results = find_task_command(client, args={'task_id': '12'})
+    human_readable = tableToMarkdown('MSSPortal Task', result_task)
+    assert results.readable_output == human_readable
+    
+def test_get_case(mocker): 
+    client = Client(base_url=URL)
+    result_task = util_load_json('./test_data/get_case_result.json')
+    mocker.patch.object(Client, 'get_case', return_value=result_task)
+    results = get_case_command(client, args={'case_id': '12'})
+    human_readable = tableToMarkdown('MSSPortal Case 12', result_task)
+    assert results.readable_output == human_readable
+
+def test_get_case(mocker): 
+    client = Client(base_url=URL)
+    result_task = util_load_json('./test_data/get_case_result.json')
+    mocker.patch.object(Client, 'get_case', return_value=result_task)
+    results = get_case_command(client, args={'case_id': '12'})
+    human_readable = tableToMarkdown('MSSPortal Case 12', result_task)
     assert results.readable_output == human_readable
     

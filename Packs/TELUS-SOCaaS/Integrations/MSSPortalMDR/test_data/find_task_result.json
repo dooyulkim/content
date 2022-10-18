@@ -1,0 +1,72 @@
+{
+    "totalPages": 0,
+    "totalElements": 0,
+    "number": 0,
+    "sort": {
+      "empty": true,
+      "sorted": true,
+      "unsorted": true
+    },
+    "size": 0,
+    "content": [
+      {
+        "id": 0,
+        "name": "Task",
+        "description": "AbnormalInboundVolume",
+        "caseId": 1,
+        "customerId": 1,
+        "accountable": "TELUS",
+        "status": "PENDING",
+        "acknowledged": true,
+        "priority": "HIGH",
+        "phase": "HIGH",
+        "telusPrime": "https://mssportal.telus.com/api/users/1",
+        "dueDate": "2020-09-21",
+        "createdAt": "2022-10-18T19:22:24.941Z",
+        "createdBy": "string",
+        "updatedAt": "2022-10-18T19:22:24.941Z",
+        "updatedBy": "string",
+        "acknowledgedAt": "2022-10-18T19:22:24.942Z",
+        "acknowledgedBy": "string",
+        "caseTitle": "string",
+        "aboutToExpireThresholdInDays": 0,
+        "playbookName": "string",
+        "comments": [
+          {
+            "id": 0,
+            "createdAt": "2022-10-18T19:22:24.942Z",
+            "createdBy": "string",
+            "updatedAt": "2022-10-18T19:22:24.942Z",
+            "updatedBy": "string",
+            "commentTextHtml": "string",
+            "authorship": "TELUS",
+            "acknowledged": true,
+            "acknowledgedAt": "2022-10-18T19:22:24.942Z",
+            "acknowledgedBy": "string",
+            "readAt": "2022-10-18T19:22:24.942Z"
+          }
+        ],
+        "unreadCommentsByCustomer": 0,
+        "unreadCommentsByTelus": 0,
+        "modifiedByTelus": true,
+        "resolvedAt": "2022-10-18T19:22:24.942Z",
+        "resolvedBy": "string"
+      }
+    ],
+    "numberOfElements": 0,
+    "pageable": {
+      "sort": {
+        "empty": true,
+        "sorted": true,
+        "unsorted": true
+      },
+      "offset": 0,
+      "pageNumber": 0,
+      "pageSize": 0,
+      "paged": true,
+      "unpaged": true
+    },
+    "first": true,
+    "last": true,
+    "empty": true
+  }
