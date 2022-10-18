@@ -895,7 +895,7 @@ script:
       description: undefined
       type: String
   - deprecated: false
-    description: "mssportal-update-case command: Returns a MSSPortal case\n    Args:\n        client(Client): MSSPortal client to use\n        case_id: Case ID\n        status: The status of the case. Ex) PENDING, IN_PROGRESS, CLOSED;\n        telusPrime: The Telus user accountable for the case. Ex) https://mssportal.telus.com/api/users/1\n        description: The description of the case. Ex) This is a case description\n        caseTitle: The caseTitle of the case. Ex) This is a case title.\n        priority: The priority of the case. Ex) VERY_LOW, LOW, MEDIUM, HIGH, CRITICAL\n        resolutionNotes: The resolution notes of the case. Ex) This is a resolution notes\n    Returns:\n        A ``CommandResults`` object that is then passed to ``return_results``,\n        that contains the result of case update\n    "
+    description: "mssportal-update-case command: Returns a MSSPortal case "
     name: mssportal-update-case
     arguments:
     - name: case_id
