@@ -1,23 +1,18 @@
 {
     "get_alert_result": {
         "id": 3274,
-        "createdAt": "2022-10-05T15:25:17Z",
-        "sourceId": "XSOAR_LOGRHYTHM",
-        "sourceCreatedAt": "2022-05-10T15:23:48Z",
-        "sourceModifiedAt": "2022-05-10T15:23:48Z",
-        "sourceAlertId": "597774",
-        "sourceRaw": "{}",
-        "severity": "MEDIUM",
-        "customerId": 33096,
-        "investigationCaseId": 4431,
-        "acknowledgedBy": null,
-        "acknowledgedAt": null,
-        "name": "AIE: silent unique value not observed - paired",
-        "detailHtml": null,
-        "providerId": "XSOAR_LOGRHYTHM",
-        "providerCreatedAt": "2022-05-10T15:23:48Z",
-        "providerModifiedAt": "2022-05-10T15:23:48Z",
-        "providerAlertId": "597774",
-        "providerRaw": "{}"
+        "createdAt": "2022-10-18T15:41:36.329Z",
+        "sourceId": "Cortex XDR",
+        "sourceCreatedAt": "2022-10-18T15:41:36.329Z",
+        "sourceModifiedAt": "2022-10-18T15:41:36.329Z",
+        "sourceAlertId": "123",
+        "sourceRaw": "string",
+        "severity": "HIGH",
+        "customerId": 0,
+        "investigationCaseId": 0,
+        "acknowledgedBy": "string",
+        "acknowledgedAt": "2022-10-18T15:41:36.329Z",
+        "name": "string",
+        "detailHtml": "string"
     }
 }

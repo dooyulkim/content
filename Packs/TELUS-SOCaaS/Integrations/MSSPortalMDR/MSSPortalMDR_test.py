@@ -57,7 +57,8 @@ import io
 import json
 
 from CommonServerPython import tableToMarkdown
-from MSSPortalMDR import Client, get_alert_command, update_case_command, acknowledge_case_command, find_playbook_command, resolve_case_command, create_playbook_command, create_case_command, get_task_command, find_task_command, get_case_command
+from MSSPortalMDR import Client, get_alert_command, update_case_command, acknowledge_case_command, find_playbook_command, resolve_case_command, create_playbook_command, create_case_command, get_task_command
+# from MSSPortalMDR import Client, create_alert_command, get_alert_command
 
 URL = "https://portalservice.url"
 
@@ -80,7 +81,7 @@ def test_get_alert_command(mocker):
     client = Client(base_url=URL)
     result_alert = util_load_json('./test_data/get_alert_result.json')
     mocker.patch.object(Client, 'get_alert', return_value=result_alert)
-    results = get_alert_command(client, args={'alert_id': '1'})
+    results = get_alert_command(client, args={'id': '1'})
     human_readable = tableToMarkdown('MSSPortal Alert 1', result_alert)
     assert results.readable_output == human_readable
 
@@ -97,14 +98,14 @@ def test_update_case_command(mocker):
     """
     client = Client(base_url=URL)
     mocker.patch.object(Client, 'update_case', return_value='')
-    results = update_case_command(client, args={'case_id': '1234', 'status': 'IN_PROGRESS'})
+    results = update_case_command(client, args={'id': '1234', 'status': 'IN_PROGRESS'})
     human_readable = 'MSSPortal Case 1234 updated'
     assert results.readable_output == human_readable
 
     try:
         update_case_command(client, args={'status': 'IN_PROGRESS'})
     except ValueError as error:
-        assert 'case_id not specified' == str(error)
+        assert 'id not specified' == str(error)
 
 
 def test_acknowledge_case_command(mocker):
@@ -119,11 +120,11 @@ def test_acknowledge_case_command(mocker):
     """
     client = Client(base_url=URL)
     mocker.patch.object(Client, 'acknowledge_case', return_value='')
-    results = acknowledge_case_command(client, args={'case_id': '1234'})
+    results = acknowledge_case_command(client, args={'id': '1234'})
     human_readable = 'MSSPortal Case 1234 acknowledged'
     assert results.readable_output == human_readable
-    
-    
+
+
 def test_resolve_case_command(mocker):
     """
     Given:
@@ -136,71 +137,84 @@ def test_resolve_case_command(mocker):
     """
     client = Client(base_url=URL)
     mocker.patch.object(Client, 'resolve_case', return_value='')
-    results = resolve_case_command(client, args={'case_id': '1234'})
+    results = resolve_case_command(client, args={'id': '1234'})
     human_readable = 'MSSPortal Case 1234 resolved'
     assert results.readable_output == human_readable
-    
-    
+
+
 def test_find_playbook(mocker): 
-    
     client = Client(base_url=URL)
     result_playbook = util_load_json('./test_data/get_playbook_result.json')
     mocker.patch.object(Client, 'find_playbook', return_value=result_playbook)
-    results = find_playbook_command(client, args={'playbook_id': '1'})
+    results = find_playbook_command(client, args={'playbookId': '1'})
     human_readable = tableToMarkdown('MSSPortal Playbook 1', result_playbook)
     assert results.readable_output == human_readable
-    
-def test_create_playbook(mocker): 
-    
+
+
+def test_create_playbook(mocker):  
     client = Client(base_url=URL)
     result_playbook = util_load_json('./test_data/create_playbook.json')
     mocker.patch.object(Client, 'create_playbook', return_value=result_playbook)
-    results = create_playbook_command(client, args={'name': 'malware'})
+    results = create_playbook_command(client, args={'name': 'Malware'})
     human_readable = tableToMarkdown('MSSPortal Playbook', result_playbook)
     assert results.readable_output == human_readable
-    
+
 
 def test_create_case(mocker):
-    
     client = Client(base_url=URL)
     result_case = util_load_json('./test_data/create_case_result.json')
     mocker.patch.object(Client, 'create_case', return_value=result_case)
-    results = create_case_command(client, args={'status': 'pending'})
-    human_readable = tableToMarkdown('MSSPortal Case', result_case)
+    arg_json = {
+        "description": "Test case description",
+        "caseTitle": "Test case title",
+        "priority": "medium",
+        "customerId": 33069,
+        "caseSource": "Cortex XDR",
+        "serviceComponent": "SOC"
+    }
+    results = create_case_command(client, args=arg_json)
+    human_readable = tableToMarkdown('MSSPortal Case 1', result_case)
     assert results.readable_output == human_readable
-    
-def test_get_task(mocker): 
-    
+
+
+def test_get_task(mocker):
     client = Client(base_url=URL)
     result_task = util_load_json('./test_data/get_task_result.json')
     mocker.patch.object(Client, 'get_task', return_value=result_task)
-    results = get_task_command(client, args={'task_id': '12'})
+    results = get_task_command(client, args={'id': '12'})
     human_readable = tableToMarkdown('MSSPortal Task 12', result_task)
     assert results.readable_output == human_readable
     
-    
-def test_find_task(mocker):
-    
+
+def test_confirm_incident_command(mocker):
+    """
+    Given:
+        - Output of the portal API as list
+    When:
+        - Getting a alert from the Portal API
+    Then:
+        - Return results as war-room entry
+
+    """
     client = Client(base_url=URL)
-    result_task = util_load_json('./test_data/find_task_result.json')
-    mocker.patch.object(Client, 'find_task', return_value=result_task)
-    results = find_task_command(client, args={'task_id': '12'})
-    human_readable = tableToMarkdown('MSSPortal Task', result_task)
-    assert results.readable_output == human_readable
-    
-def test_get_case(mocker): 
-    client = Client(base_url=URL)
-    result_task = util_load_json('./test_data/get_case_result.json')
-    mocker.patch.object(Client, 'get_case', return_value=result_task)
-    results = get_case_command(client, args={'case_id': '12'})
-    human_readable = tableToMarkdown('MSSPortal Case 12', result_task)
+    mocker.patch.object(Client, 'confirm_incident', return_value='')
+    results = confirm_incident_command(client, args={'id': '1234'})
+    human_readable = 'MSSPortal Case 1234 confirmed as a true incident'
     assert results.readable_output == human_readable
 
-def test_get_case(mocker): 
+
+def test_activate_playbook_command(mocker):
+    """
+    Given:
+        - Output of the portal API as list
+    When:
+        - activate the playbook in the case
+    Then:
+        - Return results as war-room entry
+
+    """
     client = Client(base_url=URL)
-    result_task = util_load_json('./test_data/get_case_result.json')
-    mocker.patch.object(Client, 'get_case', return_value=result_task)
-    results = get_case_command(client, args={'case_id': '12'})
-    human_readable = tableToMarkdown('MSSPortal Case 12', result_task)
+    mocker.patch.object(Client, 'activate_playbook', return_value='')
+    results = activate_playbook_command(client, args={'caseId': '1234', 'playbookId': '1234'})
+    human_readable = 'MSSPortal playbook 1234 was activated in the case 1234'
     assert results.readable_output == human_readable
-    
