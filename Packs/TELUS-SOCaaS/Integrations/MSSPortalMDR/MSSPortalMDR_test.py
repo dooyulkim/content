@@ -57,7 +57,19 @@ import io
 import json
 
 from CommonServerPython import tableToMarkdown
-from MSSPortalMDR import Client, activate_playbook_command, confirm_incident_command, get_alert_command, update_case_command, acknowledge_case_command, find_playbook_command, resolve_case_command, create_playbook_command, create_case_command, get_task_command
+from MSSPortalMDR import (
+    Client,
+    activate_playbook_command,
+    confirm_incident_command,
+    get_alert_command,
+    update_case_command,
+    acknowledge_case_command,
+    find_playbook_command,
+    resolve_case_command,
+    create_playbook_command,
+    create_case_command,
+    get_task_command
+)
 # from MSSPortalMDR import Client, create_alert_command, get_alert_command
 
 URL = "https://portalservice.url"
@@ -137,12 +149,12 @@ def test_resolve_case_command(mocker):
     """
     client = Client(base_url=URL)
     mocker.patch.object(Client, 'resolve_case', return_value='')
-    results = resolve_case_command(client, args={'id': '1234'})
-    human_readable = 'MSSPortal Case 1234 resolved'
+    results = resolve_case_command(client, args={'id': '1234', 'resolutionNotes': 'test'})
+    human_readable = 'MSSPortal Case 1234 resolved - test'
     assert results.readable_output == human_readable
 
 
-def test_find_playbook(mocker): 
+def test_find_playbook(mocker):
     client = Client(base_url=URL)
     result_playbook = util_load_json('./test_data/get_playbook_result.json')
     mocker.patch.object(Client, 'find_playbook', return_value=result_playbook)
@@ -151,7 +163,7 @@ def test_find_playbook(mocker):
     assert results.readable_output == human_readable
 
 
-def test_create_playbook(mocker):  
+def test_create_playbook(mocker):
     client = Client(base_url=URL)
     result_playbook = util_load_json('./test_data/create_playbook.json')
     mocker.patch.object(Client, 'create_playbook', return_value=result_playbook)

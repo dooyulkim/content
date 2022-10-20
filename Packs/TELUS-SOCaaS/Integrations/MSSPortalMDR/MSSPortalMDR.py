@@ -451,7 +451,7 @@ def create_alert_command(client: Client, args: Dict[str, Any]) -> CommandResults
         "investigationCaseId": investigationCaseId,
         "name": name
     }
-        
+
     caseDescription = args.get('caseDescription')
     if caseDescription:
         json_data['caseDescription'] = caseDescription
@@ -564,15 +564,15 @@ def find_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
         "limit": limit
     }
 
-    task = client.find_task(json_data)
+    tasks = client.find_task(json_data)
 
-    readable_output = tableToMarkdown(f'MSSPortal Task', task)
+    readable_output = tableToMarkdown('MSSPortal Task founded', tasks)
 
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Task',
         outputs_key_field='id',
-        outputs=task
+        outputs=tasks
     )
 
 
@@ -1005,7 +1005,7 @@ def create_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     serviceComponent = args.get('serviceComponent', None)
     if not description:
         raise ValueError('serviceComponent not specified')
-    
+
     json_data = {
         'description': description,
         'caseTitle': caseTitle,
