@@ -196,7 +196,7 @@ def test_get_task(mocker):
     results = get_task_command(client, args={'id': '12'})
     human_readable = tableToMarkdown('MSSPortal Task 12', result_task)
     assert results.readable_output == human_readable
-    
+
 
 def test_confirm_incident_command(mocker):
     """
