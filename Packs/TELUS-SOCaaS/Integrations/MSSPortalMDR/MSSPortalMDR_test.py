@@ -57,7 +57,7 @@ import io
 import json
 
 from CommonServerPython import tableToMarkdown
-from MSSPortalMDR import Client, get_alert_command, update_case_command, acknowledge_case_command, find_playbook_command, resolve_case_command, create_playbook_command, create_case_command, get_task_command
+from MSSPortalMDR import Client, get_alert_command, update_case_command, acknowledge_case_command, find_playbook_command, resolve_case_command, create_playbook_command, create_case_command, get_task_command, confirm_incident_command, activate_playbook_command
 # from MSSPortalMDR import Client, create_alert_command, get_alert_command
 
 URL = "https://portalservice.url"
