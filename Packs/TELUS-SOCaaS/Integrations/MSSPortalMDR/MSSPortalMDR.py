@@ -30,35 +30,35 @@ class Client(BaseClient):
     """
 
     def getCurrentUserIdentity(self) -> Dict[str, Any]:
-        """Gets cirremt user's identity
+        """Gets customer user's identity
         This methods will be used mainly to test API connectivity
         """
 
         return self._http_request('get', '/identities/current')
 
-    def get_alert(self, alert_id: str) -> Dict[str, Any]:
+    def get_alert(self, id: str) -> Dict[str, Any]:
         """Gets a specific MSSPortal alert by id
 
-        :type alert_id: ``str``
-        :param alert_id: id of the alert to return
+        :type id: ``str``
+        :param id: id of the alert to return
 
         :return: dict containing the alert as returned from the API
         :rtype: ``Dict[str, Any]``
         """
 
-        return self._http_request('get', f'/alerts/{alert_id}')
+        return self._http_request('get', f'/alerts/{id}')
 
-    def get_case(self, case_id: str) -> Dict[str, Any]:
+    def get_case(self, id: str) -> Dict[str, Any]:
         """Get a specific MSSPortal case by id
 
-        :type case_id: ``str``
-        :param case_id: id of the case to acknowledge
+        :type id: ``str``
+        :param id: id of the case to acknowledge
 
         :return: string from the API call
         :rtype: ``str``
         """
 
-        return self._http_request('get', f'/cases/{case_id}')
+        return self._http_request('get', f'/cases/{id}')
 
     def find_task(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Get a specific MSSPortal case by id
@@ -69,65 +69,64 @@ class Client(BaseClient):
 
         return self._http_request('get', '/tasks', json_data=data)
 
-    def update_case(self, case_id: str, data: Dict[str, Any]) -> str:
+    def update_case(self, id: str, data: Dict[str, Any]) -> str:
         """Updates a specific MSSPortal case by id
 
-        :type case_id: ``str``
-        :param case_id: id of the case to update
+        :type id: ``str``
+        :param id: id of the case to update
 
         :return: string from the API call
         :rtype: ``str``
         """
 
-        return self._http_request('put', f'/cases/{case_id}', json_data=data, resp_type='text')
+        return self._http_request('put', f'/cases/{id}', json_data=data, resp_type='text')
 
-    def acknowledge_case(self, case_id: str) -> str:
+    def acknowledge_case(self, id: str) -> str:
         """Acknowledge a specific MSSPortal case by id
 
-        :type case_id: ``str``
-        :param case_id: id of the case to acknowledge
+        :type id: ``str``
+        :param id: id of the case to acknowledge
 
         :return: string from the API call
         :rtype: ``str``
         """
 
-        return self._http_request('put', f'/cases/{case_id}/acknowledgement', resp_type='text')
+        return self._http_request('put', f'/cases/{id}/acknowledgement', resp_type='text')
 
-    def get_playbook(self, playbook_id: str) -> Dict[str, Any]:
+    def get_playbook(self, id: str) -> Dict[str, Any]:
         """Get a specific MSSPortal playbook by id
 
-        :type case_id: ``str``
-        :param case_id: id of the case to acknowledge
+        :type id: ``str``
+        :param id: id of the playbook
 
         :return: string from the API call
         :rtype: ``Dict[str, Any]``
         """
 
-        return self._http_request('get', f'/playbooks/{playbook_id}')
+        return self._http_request('get', f'/playbooks/{id}')
 
-    def find_playbook(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    def find_playbook(self, searchParams: Dict[str, Any]) -> Dict[str, Any]:
         """Get a specific MSSPortal playbook by id
 
-        :type case_id: ``str``
-        :param case_id: id of the case t acknowledge
+        :type data: ``Dict[str, Any]``
+        :param data: search parameter values
 
         :return: string from the API call
         :rtype: ``Dict[str, Any]``
         """
+        return self._http_request('get', '/playbooks', params=searchParams)
 
-        return self._http_request('get', '/playbooks', json_data=data)
-
-    def get_task(self, task_id: str) -> Dict[str, Any]:
+    def get_task(self, id: str) -> Dict[str, Any]:
         """Get a specific MSSPortal task by id
 
-        :type task_id: ``str``
-        :param task_id: id of the case to acknowledge
+        :type id: ``str``
+        :param id: id of the case to acknowledge
 
         :return: string from the API call
         :rtype: ``Dict[str, Any]``
         """
 
-        return self._http_request('get', f'/tasks/{task_id}')
+        return self._http_request('get', f'/tasks/{id}')
 
     def create_task(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """create a MSSPortal task
@@ -138,20 +137,15 @@ class Client(BaseClient):
         :return: string from the API call
         :rtype: ``Dict[str, Any]``
         """
-
-        return self._http_request('post', '/tasks')
+        return self._http_request('post', '/tasks', json_data=data)
 
     def create_case(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a specific MSSPortal case by id
-
-        :type case_id: ``str``
-        :param case_id: id of the case to acknowledge
+        """Create a specific MSSPortal case
 
         :return: string from the API call
-        :rtype: ``str``
+        :rtype: ``Dict[str, Any]``
         """
-
-        return self._http_request('post', '/cases')
+        return self._http_request('post', '/cases', json_data=data)
 
     def create_alert(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Gets a specific MSSPortal alert by id
@@ -175,7 +169,7 @@ class Client(BaseClient):
 
         return self._http_request('post', '/playbooks', json_data=data)
 
-    def resolve_case(self, case_id: str) -> str:
+    def resolve_case(self, id: str, data: Dict[str, Any]) -> str:
         """Resolve a MSSPortal case
         :type: dict containing the alert
         :param ``Dict[str, Any]``
@@ -183,7 +177,34 @@ class Client(BaseClient):
         :return: dict containing the alert as returned from the API
         :rtype: ``str``
         """
-        return self._http_request('put', f'/cases/{case_id}/resolution', resp_type='text')
+        return self._http_request('put', f'/cases/{id}/resolution', json_data=data, resp_type='text')
+
+    def confirm_incident(self, id: str) -> str:
+        """confirms the case as a true incident
+
+        :type id: ``str``
+        :param id: id of the case to confirm as a true incident
+
+        :return: string from the API call
+        :rtype: ``str``
+        """
+
+        return self._http_request('put', f'/cases/{id}/incident', resp_type='text')
+
+    def activate_playbook(self, caseId: str, playbookId: str, excludeTaskIds: str) -> str:
+        """confirms the case as a true incident
+
+        :type id: ``str``
+        :param id: id of the case to confirm as a true incident
+
+        :return: string from the API call
+        :rtype: ``str``
+        """
+        data = []
+        if excludeTaskIds:
+            data = excludeTaskIds.replace(" ", "").split(",")
+
+        return self._http_request('post', f'/cases/{caseId}/playbooks/{playbookId}', json_data=data, resp_type='text')
 
 
 ''' HELPER FUNCTIONS '''
@@ -237,7 +258,7 @@ def get_alert_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     :type args: ``Dict[str, Any]``
     :param args:
         all command arguments, usually passed from ``demisto.args()``.
-        ``args['alert_id']`` alert ID to return
+        ``args['id']`` alert ID to return
 
     :return:
         A ``CommandResults`` object that is then passed to ``return_results``,
@@ -246,15 +267,15 @@ def get_alert_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     :rtype: ``CommandResults``
     """
 
-    alert_id = args.get('alert_id', None)
-    if not alert_id:
-        raise ValueError('alert_id not specified')
+    id = args.get('id', None)
+    if not id:
+        raise ValueError('id not specified')
 
-    alert = client.get_alert(alert_id)
+    alert = client.get_alert(id)
 
     # tableToMarkdown() is defined is CommonServerPython.py and is used very
     # often to convert lists and dicts into a human readable format in markdown
-    readable_output = tableToMarkdown(f'MSSPortal Alert {alert_id}', alert)
+    readable_output = tableToMarkdown(f'MSSPortal Alert {id}', alert)
 
     return CommandResults(
         readable_output=readable_output,
@@ -273,7 +294,7 @@ def update_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     :type args: ``Dict[str, Any]``
     :param args:
         all command arguments, usually passed from ``demisto.args()``.
-        ``args['case_id']`` alert ID to return
+        ``args['id']`` alert ID to return
 
     :return:
         A ``CommandResults`` object that is then passed to ``return_results``,
@@ -282,9 +303,9 @@ def update_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     :rtype: ``CommandResults``
     """
 
-    case_id = args.get('case_id', None)
-    if not case_id:
-        raise ValueError('case_id not specified')
+    id = args.get('id', None)
+    if not id:
+        raise ValueError('id not specified')
 
     json_data: Dict[str, Any] = {}
 
@@ -307,15 +328,15 @@ def update_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     if not resolutionNotes:
         json_data['resolutionNotes'] = resolutionNotes
 
-    client.update_case(case_id, json_data)
+    client.update_case(id, json_data)
 
     return CommandResults(
-        readable_output=f'MSSPortal Case {case_id} updated'
+        readable_output=f'MSSPortal Case {id} updated'
     )
 
 
 def acknowledge_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
-    """mssportal-acknowledge-alert command: Returns a MSSPortal case
+    """mssportal-acknowledge-case command: change case status from pending to investigate
 
     :type client: ``Client``
     :param Client: MSSPortal client to use
@@ -323,23 +344,23 @@ def acknowledge_case_command(client: Client, args: Dict[str, Any]) -> CommandRes
     :type args: ``Dict[str, Any]``
     :param args:
         all command arguments, usually passed from ``demisto.args()``.
-        ``args['case_id']`` case ID to return
+        ``args['id']`` case ID to return
 
     :return:
         A ``CommandResults`` object that is then passed to ``return_results``,
-        that contains an alert
+        that contains the result of the case acknowledgement
 
     :rtype: ``CommandResults``
     """
 
-    case_id = args.get('case_id', None)
-    if not case_id:
-        raise ValueError('case_id not specified')
+    id = args.get('id', None)
+    if not id:
+        raise ValueError('id not specified')
 
-    client.acknowledge_case(case_id)
+    client.acknowledge_case(id)
 
     return CommandResults(
-        readable_output=f'MSSPortal Case {case_id} acknowledged'
+        readable_output=f'MSSPortal Case {id} acknowledged'
     )
 
 
@@ -352,7 +373,7 @@ def resolve_case_command(client: Client, args: Dict[str, Any]) -> CommandResults
     :type args: ``Dict[str, Any]``
     :param args:
         all command arguments, usually passed from ``demisto.args()``.
-        ``args['case_id']`` case ID to return
+        ``args['id']`` case ID to return
 
     :return:
         A ``CommandResults`` object that is then passed to ``return_results``,
@@ -361,14 +382,17 @@ def resolve_case_command(client: Client, args: Dict[str, Any]) -> CommandResults
     :rtype: ``CommandResults``
     """
 
-    case_id = args.get('case_id', None)
-    if not case_id:
-        raise ValueError('case_id not specified')
+    id = args.get('id', None)
+    if not id:
+        raise ValueError('id not specified')
+    resolutionNotes = args.get('resolutionNotes', None)
+    if not resolutionNotes:
+        raise ValueError('resolutionNotes not specified')
 
-    client.resolve_case(case_id)
+    client.resolve_case(id, {"resolutionNotes": resolutionNotes})
 
     return CommandResults(
-        readable_output=f'MSSPortal Case {case_id} resolved'
+        readable_output=f'MSSPortal Case {id} resolved - {resolutionNotes}'
     )
 
 
@@ -390,47 +414,53 @@ def create_alert_command(client: Client, args: Dict[str, Any]) -> CommandResults
     :rtype: ``CommandResults``
     """
 
-    provider_id = args.get('provider_id')
-    if not provider_id:
-        raise ValueError('provider_id not specified')
-    alert_id = args.get('alert_id')
-    if not alert_id:
-        raise ValueError('alert_id not specified')
-    created_at = args.get('created_at')
-    if not created_at:
-        raise ValueError('created_at not specified')
-    modified_at = args.get('modified_at')
-    if not modified_at:
-        raise ValueError('modified_at not specified')
-    raw_data = args.get('raw_data', '{}')
-    if not raw_data:
-        raise ValueError('raw_data not specified')
+    sourceId = args.get('sourceId')
+    if not sourceId:
+        raise ValueError('sourceId not specified')
+    sourceCreatedAt = args.get('sourceCreatedAt')
+    if not sourceCreatedAt:
+        raise ValueError('sourceCreatedAt not specified')
+    sourceModifiedAt = args.get('sourceModifiedAt')
+    if not sourceModifiedAt:
+        raise ValueError('sourceModifiedAt not specified')
+    sourceAlertId = args.get('sourceAlertId')
+    if not sourceAlertId:
+        raise ValueError('sourceAlertId not specified')
+    sourceRaw = args.get('sourceRaw', '{}')
+    if not sourceRaw:
+        raise ValueError('sourceRaw not specified')
     severity = args.get('severity')
     if not severity:
         raise ValueError('severity not specified')
-    customer_id = args.get('customer_id',)
-    if not customer_id:
-        raise ValueError('customer_id not specified')
-    investigation_case_id = args.get('investigation_case_id')
+    customerId = args.get('customerId',)
+    if not customerId:
+        raise ValueError('customerId not specified')
+    investigationCaseId = args.get('investigationCaseId')
     name = args.get('name')
     if not name:
         raise ValueError('name not specified')
-    related_case_description = args.get('related_case_description')
-    related_case_title = args.get('related_case_title')
 
     json_data = {
-        "providerId": provider_id,
-        "providerCreatedAt": created_at,
-        "providerModifiedAt": modified_at,
-        "providerAlertId": alert_id,
-        "providerRaw": raw_data,
+        "sourceId": sourceId,
+        "sourceCreatedAt": sourceCreatedAt,
+        "sourceModifiedAt": sourceModifiedAt,
+        "sourceAlertId": sourceAlertId,
+        "sourceRaw": json.dumps(sourceRaw),
         "severity": severity,
-        "customerId": customer_id,
-        "investigationCaseId": investigation_case_id,
-        "name": name,
-        "Related case description": related_case_description,
-        "Related case title": related_case_title
+        "customerId": customerId,
+        "investigationCaseId": investigationCaseId,
+        "name": name
     }
+        
+    caseDescription = args.get('caseDescription')
+    if caseDescription:
+        json_data['caseDescription'] = caseDescription
+    caseTitle = args.get('caseTitle')
+    if caseTitle:
+        json_data['caseTitle'] = caseTitle
+    detailHtml = args.get('detailHtml')
+    if detailHtml:
+        json_data['detailHtml'] = detailHtml
 
     alert = client.create_alert(json_data)
 
@@ -441,12 +471,12 @@ def create_alert_command(client: Client, args: Dict[str, Any]) -> CommandResults
     # tableToMarkdown() is defined is CommonServerPython.py and is used very
     # often to convert lists and dicts into a human readable format in markdown
 
-    readable_output = tableToMarkdown(f'MSSPortal Alert {alert_id}', alert)
+    readable_output = tableToMarkdown(f'MSSPortal Alert {alert["id"]}', alert)
 
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Alert',
-        outputs_key_field='alert_id',
+        outputs_key_field='id',
         outputs=alert
     )
 
@@ -490,10 +520,10 @@ def find_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
 
     """
 
-    task_id = args.get('task_id')
+    task_id = args.get('id')
     name = args.get('name')
     description = args.get('description')
-    case_id = args.get('case_id')
+    case_id = args.get('caseId')
     accountable = args.get('accountable')
     phase = args.get('phase')
     priority = args.get('priority')
@@ -541,7 +571,7 @@ def find_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Task',
-        outputs_key_field='task_id',
+        outputs_key_field='id',
         outputs=task
     )
 
@@ -551,7 +581,7 @@ def get_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
 
     Args:
         client(Client): MSSPortal client to use
-        case_id: Case ID to return
+        id: Case ID to return
 
     Returns:
         A ``CommandResults`` object that is then passed to ``return_results``,
@@ -594,15 +624,15 @@ def get_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
         firstTelusIncidentTaskResolvedAt(date): The time the first TELUS task was resolved after promoting as incident (optional)
     """
 
-    case_id = args.get('case_id', None)
-    if not case_id:
-        raise ValueError('case_id not specified')
+    id = args.get('id', None)
+    if not id:
+        raise ValueError('id not specified')
 
-    case = client.get_case(case_id)
+    case = client.get_case(id)
 
     # tableToMarkdown() is defined is CommonServerPython.py and is used very
     # often to convert lists and dicts into a human readable format in markdown
-    readable_output = tableToMarkdown(f'MSSPortal Case {case_id}', case)
+    readable_output = tableToMarkdown(f'MSSPortal Case {id}', case)
 
     return CommandResults(
         readable_output=readable_output,
@@ -614,41 +644,46 @@ def get_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
 
 def find_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     """mssportal-find-playbook command: Returns MSSPortal playbook
-
-
-
-
     """
-    playbook_id = args.get('playbook_id')
+
+    searchParams = {}
+
+    playbookId = args.get('playbookId')
+    if playbookId:
+        searchParams['playbookId'] = playbookId
     createdAt_from = args.get('createdAt_from')
+    if createdAt_from:
+        searchParams['createdAt_from'] = createdAt_from
     createdAt_to = args.get('createdAt_to')
+    if createdAt_to:
+        searchParams['createdAt_to'] = createdAt_to
     updatedAt_from = args.get('updatedAt_from')
+    if updatedAt_from:
+        searchParams['updatedAt_from'] = updatedAt_from
     updatedAt_to = args.get('updatedAt_to')
+    if updatedAt_to:
+        searchParams['updatedAt_to'] = updatedAt_to
     searchText = args.get('searchText')
+    if searchText:
+        searchParams['searchText'] = searchText
     sort = args.get('sort')
+    if sort:
+        searchParams['sort'] = sort
     offset = args.get('offset')
+    if offset:
+        searchParams['offset'] = offset
     limit = args.get('limit')
+    if limit:
+        searchParams['limit'] = limit
 
-    json_data = {
-        "id": playbook_id,
-        "createdAt_from": createdAt_from,
-        "createdAt_to": createdAt_to,
-        "updatedAt_from": updatedAt_from,
-        "updatedAt_to": updatedAt_to,
-        "searchText": searchText,
-        "sort": sort,
-        "offset": offset,
-        "limit": limit
-    }
+    playbook = client.find_playbook(searchParams)
 
-    playbook = client.find_playbook(json_data)
-
-    readable_output = tableToMarkdown('MSSPortal Playbook', playbook)
+    readable_output = tableToMarkdown(f'MSSPortal Playbook {playbookId}', playbook)
 
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Playbook',
-        outputs_key_field='',
+        outputs_key_field='id',
         outputs=playbook
     )
 
@@ -658,7 +693,7 @@ def get_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResults
 
     Args:
         client(Client): MSSPortal client to use
-        playbook_id:  playbook ID to return
+        id:  playbook ID to return
 
     Returns:
         A ``CommandResults`` object that is then passed to ``return_results``,
@@ -676,20 +711,20 @@ def get_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResults
         playbookTasks(unknown): undefined
     """
 
-    playbook_id = args.get('playbook_id', None)
-    if not playbook_id:
-        raise ValueError('playbook id not specified')
+    id = args.get('id', None)
+    if not id:
+        raise ValueError('id not specified')
 
-    playbook = client.get_playbook(playbook_id)
+    playbook = client.get_playbook(id)
 
     # tableToMarkdown() is defined is CommonServerPython.py and is used very
     # often to convert lists and dicts into a human readable format in markdown
-    readable_output = tableToMarkdown(f'MSSPortal Playbook {playbook_id}', playbook)
+    readable_output = tableToMarkdown(f'MSSPortal Playbook {id}', playbook)
 
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Playbook',
-        outputs_key_field='playbook_id',
+        outputs_key_field='id',
         outputs=playbook
     )
 
@@ -731,7 +766,7 @@ def create_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResu
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Playbook',
-        outputs_key_field='',
+        outputs_key_field='id',
         outputs=playbook
     )
 
@@ -777,10 +812,10 @@ def get_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
         resolvedBy(str): undefined
     """
 
-    task_id = args.get('task_id', None)
-    if not task_id:
-        raise ValueError('task_id not specified')
-    task = client.get_task(task_id)
+    id = args.get('id', None)
+    if not id:
+        raise ValueError('id not specified')
+    task = client.get_task(id)
 
     # INTEGRATION DEVELOPER TIP
     # We want to convert the "created" time from timestamp(s) to ISO8601 as
@@ -789,12 +824,12 @@ def get_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     # tableToMarkdown() is defined is CommonServerPython.py and is used very
     # often to convert lists and dicts into a human readable format in markdown
 
-    readable_output = tableToMarkdown(f'MSSPortal Task {task_id}', task)
+    readable_output = tableToMarkdown(f'MSSPortal Task {id}', task)
 
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Task',
-        outputs_key_field='task_id',
+        outputs_key_field='id',
         outputs=task
     )
 
@@ -852,37 +887,47 @@ def create_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
 
 
     """
-    name = args.get('name')
-    description = args.get('description')
-    caseId = args.get('caseId')
-    accountable = args.get('accountable')
-    telusPrime = args.get("telusPrime")
-    status = args.get("status")
-    phase = args.get("phase")
-    dueDate = args.get('dueDate')
-    aboutToExpireThresholdInDays = args.get('aboutToExpireThresholdInDays')
-    modifiedByTelus = args.get('modifiedByTelus')
+    json_data = {}
 
-    json_data = {
-        "name": name,
-        "description": description,
-        "caseId": caseId,
-        "accountable": accountable,
-        'telusPrime': telusPrime,
-        'status': status,
-        'phase': phase,
-        'dueDate': dueDate,
-        'aboutToExpireThresholdInDay': aboutToExpireThresholdInDays,
-        'modifiedByTelus': modifiedByTelus
-    }
+    name = args.get('name')
+    if name:
+        json_data['name'] = name
+    description = args.get('description')
+    if description:
+        json_data['description'] = description
+    caseId = args.get('caseId')
+    if caseId:
+        json_data['caseId'] = caseId
+    accountable = args.get('accountable')
+    if accountable:
+        json_data['accountable'] = accountable
+    telusPrime = args.get("telusPrime")
+    if telusPrime:
+        json_data['telusPrime'] = telusPrime
+    status = args.get("status")
+    if status:
+        json_data['status'] = status
+    phase = args.get("phase")
+    if description:
+        json_data['phase'] = phase
+    dueDate = args.get('dueDate')
+    if dueDate:
+        json_data['dueDate'] = dueDate
+    aboutToExpireThresholdInDays = args.get('aboutToExpireThresholdInDays')
+    if aboutToExpireThresholdInDays:
+        json_data['aboutToExpireThresholdInDays'] = aboutToExpireThresholdInDays
+    modifiedByTelus = args.get('modifiedByTelus')
+    if modifiedByTelus:
+        json_data['modifiedByTelus'] = modifiedByTelus
+
     task = client.create_task(json_data)
 
-    readable_output = tableToMarkdown('MSSPortal Task', task)
+    readable_output = tableToMarkdown(f'MSSPortal Task {task["id"]}', task)
 
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Task',
-        outputs_key_field='',
+        outputs_key_field='id',
         outputs=task
     )
 
@@ -898,7 +943,7 @@ def create_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
         caseTitle: Title of case
         priority: Priority of case (HIGH, MEDIUM, LOW)
         resolutionNotes: resolution notes of the case
-        customer_id
+        customerId
         caseSource
         alertName
         serviceComponent
@@ -942,29 +987,46 @@ def create_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
         firstTelusIncidentTaskResolvedAt(unknown): undefined
     """
 
-    status = args.get('status')
-    telusPrime = args.get('telusPrime')
-    description = args.get('description')
-    caseTitle = args.get('caseTitle')
-    priority = args.get('priority ')
-    resolutionNotes = args.get('resolutionNotes')
-    customer_id = args.get('customer_id')
-    caseSource = args.get('caseSource')
-    alertName = args.get('alertName')
-    serviceComponent = args.get('serviceComponent ')
-
+    description = args.get('description', None)
+    if not description:
+        raise ValueError('description not specified')
+    caseTitle = args.get('caseTitle', None)
+    if not description:
+        raise ValueError('caseTitle not specified')
+    priority = args.get('priority', None)
+    if not description:
+        raise ValueError('priority not specified')
+    customerId = args.get('customerId', None)
+    if not description:
+        raise ValueError('customerId not specified')
+    caseSource = args.get('caseSource', None)
+    if not description:
+        raise ValueError('caseSource not specified')
+    serviceComponent = args.get('serviceComponent', None)
+    if not description:
+        raise ValueError('serviceComponent not specified')
+    
     json_data = {
-        "status": status,
-        "telusPrime": telusPrime,
         'description': description,
         'caseTitle': caseTitle,
         'priority': priority,
-        'resolutionNotes': resolutionNotes,
-        'customer_id': customer_id,
+        'customerId': customerId,
         'caseSource': caseSource,
-        'alertName': alertName,
         'serviceComponent': serviceComponent
     }
+
+    status = args.get('status')
+    if status:
+        json_data['status'] = status
+    telusPrime = args.get('telusPrime')
+    if status:
+        json_data['telusPrime'] = telusPrime
+    resolutionNotes = args.get('resolutionNotes')
+    if resolutionNotes:
+        json_data['resolutionNotes'] = resolutionNotes
+    alertName = args.get('alertName')
+    if alertName:
+        json_data['alertName'] = alertName
 
     case = client.create_case(json_data)
 
@@ -975,13 +1037,76 @@ def create_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     # tableToMarkdown() is defined is CommonServerPython.py and is used very
     # often to convert lists and dicts into a human readable format in markdown
 
-    readable_output = tableToMarkdown('MSSPortal Case', case)
+    readable_output = tableToMarkdown(f'MSSPortal Case {case["id"]}', case)
 
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Case',
-        outputs_key_field='',
+        outputs_key_field='id',
         outputs=case
+    )
+
+
+def confirm_incident_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-confirm-incident command: confirms the case as a true incident
+
+    :type client: ``Client``
+    :param Client: MSSPortal client to use
+
+    :type args: ``Dict[str, Any]``
+    :param args:
+        all command arguments, usually passed from ``demisto.args()``.
+        ``args['id']`` case ID to return
+
+    :return:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains the result of the case acknowledgement
+
+    :rtype: ``CommandResults``
+    """
+
+    id = args.get('id', None)
+    if not id:
+        raise ValueError('id not specified')
+
+    client.confirm_incident(id)
+
+    return CommandResults(
+        readable_output=f'MSSPortal Case {id} confirmed as a true incident'
+    )
+
+
+def activate_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+    """mssportal-activate-playbook command: activate the playbook in the case
+
+    :type client: ``Client``
+    :param Client: MSSPortal client to use
+
+    :type args: ``Dict[str, Any]``
+    :param args:
+        all command arguments, usually passed from ``demisto.args()``.
+        ``args['caseId']`` case ID to in which the playbook will be activated
+        ``args['playbookId']`` playbook ID to activate in the case
+
+    :return:
+        A ``CommandResults`` object that is then passed to ``return_results``,
+        that contains the result of the case acknowledgement
+
+    :rtype: ``CommandResults``
+    """
+
+    caseId = args.get('caseId', None)
+    if not caseId:
+        raise ValueError('caseId not specified')
+    playbookId = args.get('playbookId', None)
+    if not playbookId:
+        raise ValueError('playbookId not specified')
+    excludeTaskIds = args.get('excludeTaskIds', None)
+
+    client.activate_playbook(caseId, playbookId, excludeTaskIds)
+
+    return CommandResults(
+        readable_output=f'MSSPortal playbook {playbookId} was activated in the case {playbookId}'
     )
 
 
@@ -1035,16 +1160,18 @@ def main() -> None:
         elif demisto.command() == 'mssportal-get-alert':
             return_results(get_alert_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-create-alert':
-            return_results((client, demisto.args()))
+            return_results(create_alert_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-get-case':
             return_results(get_case_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-update-case':
             return_results(update_case_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-acknowledge-case':
             return_results(acknowledge_case_command(client, demisto.args()))
-        elif demisto.command() == 'mssportal-create_case':
+        elif demisto.command() == 'mssportal-confirm-incident':
+            return_results(confirm_incident_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-create-case':
             return_results(create_case_command(client, demisto.args()))
-        elif demisto.command() == 'mssportal-resolve_case':
+        elif demisto.command() == 'mssportal-resolve-case':
             return_results(resolve_case_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-get-playbook':
             return_results(get_playbook_command(client, demisto.args()))
@@ -1052,6 +1179,8 @@ def main() -> None:
             return_results(find_playbook_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-create-playbook':
             return_results(create_playbook_command(client, demisto.args()))
+        elif demisto.command() == 'mssportal-activate-playbook':
+            return_results(activate_playbook_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-get-task':
             return_results(get_task_command(client, demisto.args()))
         elif demisto.command() == 'mssportal-create-task':
