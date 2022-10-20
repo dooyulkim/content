@@ -159,7 +159,7 @@ def test_find_playbook(mocker):
     result_playbook = util_load_json('./test_data/get_playbook_result.json')
     mocker.patch.object(Client, 'find_playbook', return_value=result_playbook)
     results = find_playbook_command(client, args={'playbookId': '1'})
-    human_readable = tableToMarkdown('MSSPortal Playbook 1', result_playbook)
+    human_readable = tableToMarkdown('MSSPortal Playbooks found', result_playbook)
     assert results.readable_output == human_readable
 
 

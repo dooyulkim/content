@@ -676,15 +676,15 @@ def find_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResult
     if limit:
         searchParams['limit'] = limit
 
-    playbook = client.find_playbook(searchParams)
+    playbooks = client.find_playbook(searchParams)
 
-    readable_output = tableToMarkdown(f'MSSPortal Playbook {playbookId}', playbook)
+    readable_output = tableToMarkdown('MSSPortal Playbooks found', playbooks)
 
     return CommandResults(
         readable_output=readable_output,
         outputs_prefix='MSSPortal.Playbook',
         outputs_key_field='id',
-        outputs=playbook
+        outputs=playbooks
     )
 
 
