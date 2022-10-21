@@ -117,6 +117,7 @@ script:
     - contextPath: URLScan.FileType
       description: File type of the file scanned
       type: string
+    polling: true
   - arguments:
     - description: The URL to scan.
       isArray: true
@@ -147,6 +148,14 @@ script:
       defaultValue: 'false'
     - name: useragent
       description: User agent to perform request
+    - name: use_url_as_name
+      default: true
+      description: Whether to use the URL as the file name.
+      auto: PREDEFINED
+      predefined:
+      - "false"
+      - "true"
+      defaultValue: "false"
     deprecated: true
     description: Deprecated. Use the url command instead.
     name: urlscan-submit
@@ -220,6 +229,7 @@ script:
     - contextPath: URLScan.EffectiveURL
       description: Effective URL of the original URL
       type: string
+    polling: true
   - arguments:
     - default: true
       description: Url to scan
@@ -374,6 +384,7 @@ script:
     - contextPath: URL.Tags
       description: Tags that are associated with the URL.
       type: String
+    polling: true
   - arguments:
     - description: The UUID of the URL for which to search the transaction list.
       name: uuid
@@ -394,6 +405,7 @@ script:
     - contextPath: URLScan.httpTransaction
       description: A link to the HTTP transaction made during the search for the specified URL.
       type: string
+    polling: true
   - arguments:
     - description: The URL sought after.
       name: url
@@ -401,6 +413,7 @@ script:
     deprecated: true
     description: Submits a URL to retrieve its UUID.
     name: urlscan-submit-url-command
+    polling: true
   - arguments:
     - description: The URI for which to get the results.
       name: uri
@@ -417,9 +430,9 @@ script:
     name: urlscan-get-result-page
   runonce: false
   script: ''
-  subtype: python2
+  subtype: python3
   type: python
-  dockerimage: demisto/python:2.7.18.27799
+  dockerimage: demisto/python3:3.10.7.35188
 fromversion: 5.0.0
 tests:
-- No tests (auto formatted)
+- urlscan_malicious_Test
