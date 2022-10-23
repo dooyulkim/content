@@ -1,0 +1,11 @@
+{
+    "custom_packs": [
+        {
+            "id": "MSSPortalMDR",
+            "url": "/workspaces/content/Packs/TELUS-SOCaaS/Integrations/MSSPortalMDR"
+        }
+    ],
+    "marketplace_packs": [
+        
+    ]
+}
