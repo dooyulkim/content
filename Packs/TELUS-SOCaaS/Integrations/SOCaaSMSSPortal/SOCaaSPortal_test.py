@@ -17,7 +17,7 @@ Unit tests can be checked in 3 ways:
 - From PyCharm
 
 Example with demisto-sdk (from the content root directory):
-demisto-sdk lint -i Packs/TELUS-SOCaaS/Integrations/MSSPortalMDR
+demisto-sdk lint -i Packs/TELUS-SOCaaS/Integrations/SOCaaSMSSPortal
 
 Coverage
 --------
@@ -32,7 +32,7 @@ you need to mock the API of the external resource using pytest-mock:
 https://github.com/pytest-dev/pytest-mock/
 
 In the following code we configure requests-mock (a mock of Python requests)
-before each test to simulate the API calls to the MSSPortalMDR API (which is
+before each test to simulate the API calls to the SOCaaSMSSPortal API (which is
 OpenPhish). This way we can have full control of the API behavior and focus only
 on testing the logic inside the integration code.
 
@@ -57,7 +57,7 @@ import io
 import json
 
 from CommonServerPython import tableToMarkdown
-from MSSPortalMDR import (
+from SOCaaSMSSPortal import (
     Client,
     activate_playbook_command,
     confirm_incident_command,
@@ -70,7 +70,8 @@ from MSSPortalMDR import (
     create_case_command,
     get_task_command
 )
-# from MSSPortalMDR import Client, create_alert_command, get_alert_command
+# from SOCaaSMSSPortal
+# import Client, create_alert_command, get_alert_command
 
 URL = "https://portalservice.url"
 

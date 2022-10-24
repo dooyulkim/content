@@ -1,0 +1,21 @@
+commonfields:
+  id: 7246a027-7c21-41a3-8ac4-120f2119d179
+  version: -1
+dependson:
+  must: []
+  should:
+  - MSS Portal - MDR|||mssportal-update-case
+dockerimage: demisto/python3:3.10.7.35188
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: SOCaaS-HandleXsoarPortalMirroring
+pswd: ""
+runas: DBotWeakRole
+runonce: false
+script: ''
+scripttarget: 0
+subtype: python3
+tags:
+- post-processing
+type: python

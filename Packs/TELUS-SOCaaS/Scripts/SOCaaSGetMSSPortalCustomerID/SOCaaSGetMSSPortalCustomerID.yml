@@ -1,0 +1,16 @@
+commonfields:
+  id: a4743b1e-d208-4ff0-8272-d272c558ca46
+  version: -1
+dockerimage: demisto/xsoar-tools-hf:1.0.0.31061
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: SOCaaS-GetMSSPortalCustomerID
+pswd: ""
+runas: DBotWeakRole
+runonce: false
+script: ''
+scripttarget: 0
+subtype: python3
+tags: []
+type: python
