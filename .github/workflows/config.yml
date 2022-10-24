@@ -111,8 +111,8 @@ jobs:
       - name: Upload Packs to Artifacts Server
         env:
           REF: ${{ github.ref }}
-          DEMISTO_BASE_URL: ${{ secrets.https://host.docker.internal:4433 }}
-          DEMISTO_API_KEY: ${{ secrets.537211D7A15506A16CD2B259A033C3EC }}
+          DEMISTO_BASE_URL: ${{ secrets.DEMISTO_BASE_URL}}
+          DEMISTO_API_KEY: ${{ secrets.DEMISTO_API_KEY}}
         run : |
           if [ $PACKS_CHANGED ]; then
             BRANCH_NAME=${REF#refs/heads/}
