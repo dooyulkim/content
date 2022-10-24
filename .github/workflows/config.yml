@@ -14,13 +14,13 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 1000
           ref: ${{ github.event.pull_request.head.ref }}
       - name: XSOAR CI/CD push checkout
         if: github.event_name == 'push'
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 1000
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
