@@ -1,5 +1,7 @@
 import demistomock as demisto  # noqa: F401
 from CommonServerPython import *  # noqa: F401
+
+
 """Base Script for Cortex XSOAR (aka Demisto)
 This is an empty script with some basic structure according
 to the code conventions.

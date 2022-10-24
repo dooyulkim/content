@@ -20,5 +20,3 @@ def main():
 
 if __name__ in ('__main__', '__builtin__', 'builtins'):
     main()
-
-register_module_line('HandleXsoarPortalMirroring', 'end', __line__())

@@ -29,7 +29,7 @@ configuration:
   required: false
   type: 8
 description: This is the MSS Portal integration.
-display: SOCaaS - MSS Portal
+display: SOCaaS - MSS Portal (Developer Contribution)
 name: SOCaaS - MSS Portal
 script:
   commands:
