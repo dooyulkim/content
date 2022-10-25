@@ -1,0 +1,24 @@
+{
+    "id": 0,
+    "createdAt": "2022-10-18T03:37:19.425Z",
+    "createdBy": "string",
+    "updatedAt": "2022-10-18T03:37:19.425Z",
+    "updatedBy": "string",
+    "name": "Playbook name",
+    "description": "Playbook description",
+    "playbookTasks": [
+      {
+        "id": 0,
+        "createdAt": "2022-10-18T03:37:19.425Z",
+        "createdBy": "string",
+        "updatedAt": "2022-10-18T03:37:19.425Z",
+        "updatedBy": "string",
+        "name": "Playbook task name",
+        "description": "Playbook task description",
+        "accountable": "CUSTOMER",
+        "priority": "CRITICAL",
+        "phase": "INVESTIGATION",
+        "dueDatePeriod": 0
+      }
+    ]
+  }

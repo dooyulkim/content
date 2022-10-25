@@ -17,7 +17,7 @@ configuration:
 - display: MSS Portal API Key
   name: api_key
   required: true
-  type: 0
+  type: 4
 - defaultvalue: "false"
   display: Use system proxy settings
   name: proxy

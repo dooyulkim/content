@@ -1,0 +1,43 @@
+{
+    "id": 0,
+    "name": "Task",
+    "description": "AbnormalInboundVolume",
+    "caseId": 1,
+    "customerId": 1,
+    "accountable": "TELUS",
+    "status": "PENDING",
+    "acknowledged": true,
+    "priority": "HIGH",
+    "phase": "HIGH",
+    "telusPrime": "https://mssportal.telus.com/api/users/1",
+    "dueDate": "2020-09-21",
+    "createdAt": "2022-10-18T12:29:36.561Z",
+    "createdBy": "string",
+    "updatedAt": "2022-10-18T12:29:36.561Z",
+    "updatedBy": "string",
+    "acknowledgedAt": "2022-10-18T12:29:36.561Z",
+    "acknowledgedBy": "string",
+    "caseTitle": "string",
+    "aboutToExpireThresholdInDays": 0,
+    "playbookName": "string",
+    "comments": [
+      {
+        "id": 0,
+        "createdAt": "2022-10-18T12:29:36.561Z",
+        "createdBy": "string",
+        "updatedAt": "2022-10-18T12:29:36.561Z",
+        "updatedBy": "string",
+        "commentTextHtml": "string",
+        "authorship": "TELUS",
+        "acknowledged": true,
+        "acknowledgedAt": "2022-10-18T12:29:36.561Z",
+        "acknowledgedBy": "string",
+        "readAt": "2022-10-18T12:29:36.561Z"
+      }
+    ],
+    "unreadCommentsByCustomer": 0,
+    "unreadCommentsByTelus": 0,
+    "modifiedByTelus": true,
+    "resolvedAt": "2022-10-18T12:29:36.561Z",
+    "resolvedBy": "string"
+  }

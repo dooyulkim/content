@@ -1,0 +1,18 @@
+{
+    "get_alert_result": {
+        "id": 3274,
+        "createdAt": "2022-10-18T15:41:36.329Z",
+        "sourceId": "Cortex XDR",
+        "sourceCreatedAt": "2022-10-18T15:41:36.329Z",
+        "sourceModifiedAt": "2022-10-18T15:41:36.329Z",
+        "sourceAlertId": "123",
+        "sourceRaw": "string",
+        "severity": "HIGH",
+        "customerId": 0,
+        "investigationCaseId": 0,
+        "acknowledgedBy": "string",
+        "acknowledgedAt": "2022-10-18T15:41:36.329Z",
+        "name": "string",
+        "detailHtml": "string"
+    }
+}
