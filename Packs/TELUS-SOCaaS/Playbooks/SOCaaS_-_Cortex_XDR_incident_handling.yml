@@ -1,38 +1,46 @@
-id: 1ac8a067-8edf-47c2-8021-ddfde8011533
-version: 46
 contentitemexportablefields:
   contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    itemVersion: 4.8.18
     packID: ""
     packName: ""
-    itemVersion: 4.8.18
-    fromServerVersion: 6.0.0
     toServerVersion: ""
-    definitionid: ""
-vcShouldKeepItemLegacyProdMachine: false
-name: SOCaaS - Cortex XDR incident handling
 description: |-
   This playbook is triggered by fetching a Palo Alto Networks Cortex XDR incident.
   The playbook syncs and updates new XDR alerts that construct the incident and triggers a sub-playbook to handle each alert by type.
   Then, the playbook performs enrichment on the incident’s indicators and hunts for related IOCs.
   Based on the severity, it lets the analyst decide whether to continue to the remediation stage or close the investigation as a false positive.
   After the remediation, if there are no new alerts, the playbook stops the alert sync and closes the XDR incident and investigation. For performing the bidirectional sync, the playbook uses the incoming and outgoing mirroring feature added in XSOAR version 6.0.0. After the Calculate Severity - Generic v2 sub-playbook’s run, Cortex XSOAR will be treated as the single source of truth for the severity field, and it will sync only from Cortex XSOAR to XDR, so manual changes for the severity field in XDR will not update in the XSOAR incident.
+id: 1ac8a067-8edf-47c2-8021-ddfde8011533
+inputs: []
+name: SOCaaS - Cortex XDR incident handling
+outputs: []
+sourceplaybookid: Cortex XDR incident handling v3
 starttaskid: "0"
 tasks:
   "0":
+    continueonerrortype: ""
     id: "0"
-    taskid: 133e176a-f057-402a-8c9d-5245116cfd64
-    type: start
-    task:
-      id: 133e176a-f057-402a-8c9d-5245116cfd64
-      version: -1
-      name: ""
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "26"
+    note: false
+    quietmode: 0
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 133e176a-f057-402a-8c9d-5245116cfd64
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 133e176a-f057-402a-8c9d-5245116cfd64
+    timertriggers: []
+    type: start
     view: |-
       {
         "position": {
@@ -40,43 +48,43 @@ tasks:
           "y": 50
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "2":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: PaloAltoNetworksXDR.Incident.severity
+          operator: inList
+          right:
+            value:
+              simple: medium,high,critical
+      label: "yes"
+    continueonerrortype: ""
     id: "2"
-    taskid: 8019ab2c-abe5-4c0c-8ff7-843a1b9fc6e0
-    type: condition
-    task:
-      id: 8019ab2c-abe5-4c0c-8ff7-843a1b9fc6e0
-      version: -1
-      name: Should handle the incident?
-      type: condition
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#default#':
       - "4"
       "yes":
       - "3"
+    note: false
+    quietmode: 2
     separatecontext: false
-    conditions:
-    - label: "yes"
-      condition:
-      - - operator: inList
-          left:
-            value:
-              simple: PaloAltoNetworksXDR.Incident.severity
-            iscontext: true
-          right:
-            value:
-              simple: medium,high,critical
-          ignorecase: true
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8019ab2c-abe5-4c0c-8ff7-843a1b9fc6e0
+      iscommand: false
+      name: Should handle the incident?
+      type: condition
+      version: -1
+    taskid: 8019ab2c-abe5-4c0c-8ff7-843a1b9fc6e0
+    timertriggers: []
+    type: condition
     view: |-
       {
         "position": {
@@ -84,29 +92,17 @@ tasks:
           "y": 545
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 2
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "3":
+    continueonerrortype: ""
     id: "3"
-    taskid: 56cdea9a-bc3c-451e-8eaf-1f4e3d848e85
-    type: regular
-    task:
-      id: 56cdea9a-bc3c-451e-8eaf-1f4e3d848e85
-      version: -1
-      name: Create a case in portal
-      description: 'mssportal-create-case command: Returns a MSSPortal case'
-      script: '|||mssportal-create-case'
-      type: regular
-      iscommand: true
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "24"
+    note: false
+    quietmode: 2
     scriptarguments:
       caseSource:
         simple: Cortex XDR
@@ -121,7 +117,19 @@ tasks:
       serviceComponent:
         simple: SOC
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'mssportal-create-case command: Returns a MSSPortal case'
+      id: 56cdea9a-bc3c-451e-8eaf-1f4e3d848e85
+      iscommand: true
+      name: Create a case in portal
+      script: '|||mssportal-create-case'
+      type: regular
+      version: -1
+    taskid: 56cdea9a-bc3c-451e-8eaf-1f4e3d848e85
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -129,26 +137,26 @@ tasks:
           "y": 720
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 2
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "4":
+    continueonerrortype: ""
     id: "4"
-    taskid: 9f72f1cc-3574-4a70-8bed-1729eb392cf1
-    type: title
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
     task:
+      brand: ""
       id: 9f72f1cc-3574-4a70-8bed-1729eb392cf1
-      version: -1
+      iscommand: false
       name: Done
       type: title
-      iscommand: false
-      brand: ""
-    separatecontext: false
-    continueonerrortype: ""
+      version: -1
+    taskid: 9f72f1cc-3574-4a70-8bed-1729eb392cf1
+    timertriggers: []
+    type: title
     view: |-
       {
         "position": {
@@ -156,34 +164,34 @@ tasks:
           "y": 2995
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "7":
+    continueonerrortype: ""
     id: "7"
-    taskid: db169814-c84e-43ac-8eb2-22ecc4a95eeb
-    type: regular
-    task:
-      id: db169814-c84e-43ac-8eb2-22ecc4a95eeb
-      version: -1
-      name: Update the case in portal to change the case status from pending to inprogress
-      description: 'mssportal-acknowledge-case command: Change case status from ''pending'' to ''Investigate'''
-      script: '|||mssportal-acknowledge-case'
-      type: regular
-      iscommand: true
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "21"
+    note: false
+    quietmode: 2
     scriptarguments:
       id:
         simple: ${MSSPortal.Case.id}
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'mssportal-acknowledge-case command: Change case status from ''pending'' to ''Investigate'''
+      id: db169814-c84e-43ac-8eb2-22ecc4a95eeb
+      iscommand: true
+      name: Update the case in portal to change the case status from pending to inprogress
+      script: '|||mssportal-acknowledge-case'
+      type: regular
+      version: -1
+    taskid: db169814-c84e-43ac-8eb2-22ecc4a95eeb
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -191,36 +199,36 @@ tasks:
           "y": 2120
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 2
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "9":
+    continueonerrortype: ""
     id: "9"
-    taskid: f0e5036e-1a68-4013-8f46-c69c5d43a445
-    type: regular
-    task:
-      id: f0e5036e-1a68-4013-8f46-c69c5d43a445
-      version: -1
-      name: Close incident
-      description: 'mssportal-resolve-case command:  resolve case in MSS Portal'
-      script: '|||mssportal-resolve-case'
-      type: regular
-      iscommand: true
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "4"
+    note: false
+    quietmode: 0
     scriptarguments:
       id:
         simple: ${MSSPortal.Case.id}
       resolutionNotes:
         simple: False positive - auto closure
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'mssportal-resolve-case command:  resolve case in MSS Portal'
+      id: f0e5036e-1a68-4013-8f46-c69c5d43a445
+      iscommand: true
+      name: Close incident
+      script: '|||mssportal-resolve-case'
+      type: regular
+      version: -1
+    taskid: f0e5036e-1a68-4013-8f46-c69c5d43a445
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -228,29 +236,17 @@ tasks:
           "y": 2820
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "10":
+    continueonerrortype: ""
     id: "10"
-    taskid: 848e852f-bdb1-4d84-85c5-d32ddd4932b8
-    type: regular
-    task:
-      id: 848e852f-bdb1-4d84-85c5-d32ddd4932b8
-      version: -1
-      name: Check if the endpoint is VIP or server
-      description: Generates random string
-      scriptName: GenerateRandomString
-      type: regular
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "16"
+    note: false
+    quietmode: 0
     scriptarguments:
       Digits:
         simple: "False"
@@ -263,7 +259,19 @@ tasks:
       Uppercase:
         simple: "False"
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Generates random string
+      id: 848e852f-bdb1-4d84-85c5-d32ddd4932b8
+      iscommand: false
+      name: Check if the endpoint is VIP or server
+      script: GenerateRandomString
+      type: regular
+      version: -1
+    taskid: 848e852f-bdb1-4d84-85c5-d32ddd4932b8
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -271,40 +279,40 @@ tasks:
           "y": 2470
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "11":
-    id: "11"
-    taskid: f7e617c0-5841-4f9d-8e87-1bab9b22977a
-    type: condition
-    task:
-      id: f7e617c0-5841-4f9d-8e87-1bab9b22977a
-      version: -1
-      name: Malware on Host
-      type: condition
-      iscommand: false
-      brand: ""
-    nexttasks:
-      "yes":
-      - "27"
-    separatecontext: false
     conditions:
-    - label: "yes"
-      condition:
-      - - operator: containsGeneral
-          left:
+    - condition:
+      - - left:
+            iscontext: true
             value:
               simple: PaloAltoNetworksXDR.Incident.alert_categories
-            iscontext: true
+          operator: containsGeneral
           right:
             value:
               simple: Malware
+      label: "yes"
     continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "yes":
+      - "27"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f7e617c0-5841-4f9d-8e87-1bab9b22977a
+      iscommand: false
+      name: Malware on Host
+      type: condition
+      version: -1
+    taskid: f7e617c0-5841-4f9d-8e87-1bab9b22977a
+    timertriggers: []
+    type: condition
     view: |-
       {
         "position": {
@@ -312,29 +320,29 @@ tasks:
           "y": 1070
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "12":
+    continueonerrortype: ""
     id: "12"
-    taskid: daeb701d-58f0-4e42-8a76-37233c39cb11
-    type: title
-    task:
-      id: daeb701d-58f0-4e42-8a76-37233c39cb11
-      version: -1
-      name: 'Alert Category #1'
-      type: title
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "4"
+    note: false
+    quietmode: 0
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      id: daeb701d-58f0-4e42-8a76-37233c39cb11
+      iscommand: false
+      name: 'Alert Category #1'
+      type: title
+      version: -1
+    taskid: daeb701d-58f0-4e42-8a76-37233c39cb11
+    timertriggers: []
+    type: title
     view: |-
       {
         "position": {
@@ -342,29 +350,17 @@ tasks:
           "y": 2835
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "13":
+    continueonerrortype: ""
     id: "13"
-    taskid: 5e71f998-3ba2-4e87-8388-0cd9bbe2baca
-    type: regular
-    task:
-      id: 5e71f998-3ba2-4e87-8388-0cd9bbe2baca
-      version: -1
-      name: Check if false positive
-      description: Generates random string
-      scriptName: GenerateRandomString
-      type: regular
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "14"
+    note: false
+    quietmode: 0
     scriptarguments:
       Digits:
         simple: "False"
@@ -379,7 +375,19 @@ tasks:
       ignore-outputs:
         simple: "false"
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Generates random string
+      id: 5e71f998-3ba2-4e87-8388-0cd9bbe2baca
+      iscommand: false
+      name: Check if false positive
+      script: GenerateRandomString
+      type: regular
+      version: -1
+    taskid: 5e71f998-3ba2-4e87-8388-0cd9bbe2baca
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -387,42 +395,42 @@ tasks:
           "y": 1770
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "14":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: RandomString
+          operator: match
+          right:
+            value:
+              simple: '[a-f]'
+      label: "yes"
+    continueonerrortype: ""
     id: "14"
-    taskid: cf909f8b-1ed9-4df8-8cbf-7f67c9870028
-    type: condition
-    task:
-      id: cf909f8b-1ed9-4df8-8cbf-7f67c9870028
-      version: -1
-      name: Is false positive?
-      type: condition
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#default#':
       - "7"
       "yes":
       - "9"
+    note: false
+    quietmode: 0
     separatecontext: false
-    conditions:
-    - label: "yes"
-      condition:
-      - - operator: match
-          left:
-            value:
-              simple: RandomString
-            iscontext: true
-          right:
-            value:
-              simple: '[a-f]'
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cf909f8b-1ed9-4df8-8cbf-7f67c9870028
+      iscommand: false
+      name: Is false positive?
+      type: condition
+      version: -1
+    taskid: cf909f8b-1ed9-4df8-8cbf-7f67c9870028
+    timertriggers: []
+    type: condition
     view: |-
       {
         "position": {
@@ -430,29 +438,29 @@ tasks:
           "y": 1945
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "15":
+    continueonerrortype: ""
     id: "15"
-    taskid: e730891a-d9c0-4477-8c5e-058973c63aa2
-    type: title
-    task:
-      id: e730891a-d9c0-4477-8c5e-058973c63aa2
-      version: -1
-      name: 'Alert Category #2'
-      type: title
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "4"
+    note: false
+    quietmode: 0
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e730891a-d9c0-4477-8c5e-058973c63aa2
+      iscommand: false
+      name: 'Alert Category #2'
+      type: title
+      version: -1
+    taskid: e730891a-d9c0-4477-8c5e-058973c63aa2
+    timertriggers: []
+    type: title
     view: |-
       {
         "position": {
@@ -460,43 +468,43 @@ tasks:
           "y": 2835
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "16":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: RandomString
+          operator: inList
+          right:
+            value:
+              simple: '[a-o]'
+      label: "yes"
+    continueonerrortype: ""
     id: "16"
-    taskid: 67052944-bbc9-4d69-88f7-6f5104984c7d
-    type: condition
-    task:
-      id: 67052944-bbc9-4d69-88f7-6f5104984c7d
-      version: -1
-      name: Is the endpoint VIP or Server?
-      type: condition
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#default#':
       - "17"
       "yes":
       - "25"
+    note: false
+    quietmode: 0
     separatecontext: false
-    conditions:
-    - label: "yes"
-      condition:
-      - - operator: inList
-          left:
-            value:
-              simple: RandomString
-            iscontext: true
-          right:
-            value:
-              simple: '[a-o]'
-          ignorecase: true
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 67052944-bbc9-4d69-88f7-6f5104984c7d
+      iscommand: false
+      name: Is the endpoint VIP or Server?
+      type: condition
+      version: -1
+    taskid: 67052944-bbc9-4d69-88f7-6f5104984c7d
+    timertriggers: []
+    type: condition
     view: |-
       {
         "position": {
@@ -504,29 +512,17 @@ tasks:
           "y": 2645
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "17":
+    continueonerrortype: ""
     id: "17"
-    taskid: 85e4f29b-ef6f-48f0-841f-9793069e60e8
-    type: regular
-    task:
-      id: 85e4f29b-ef6f-48f0-841f-9793069e60e8
-      version: -1
-      name: Create portal task to clean up hosts
-      description: 'mssportal-create-task command: Returns a MSSPortal task'
-      script: '|||mssportal-create-task'
-      type: regular
-      iscommand: true
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "4"
+    note: false
+    quietmode: 0
     scriptarguments:
       aboutToExpireThresholdInDays:
         simple: "2"
@@ -538,16 +534,16 @@ tasks:
         complex:
           root: MSSPortal.Case.createdAt
           transformers:
-          - operator: ModifyDateTime
-            args:
+          - args:
               variation:
                 value:
                   simple: in 3 days
-          - operator: toString
-            args:
+            operator: ModifyDateTime
+          - args:
               format:
                 value:
                   simple: "2006-01-02"
+            operator: toString
       modifiedByTelus:
         simple: "false"
       name:
@@ -559,7 +555,19 @@ tasks:
       status:
         simple: PENDING
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'mssportal-create-task command: Returns a MSSPortal task'
+      id: 85e4f29b-ef6f-48f0-841f-9793069e60e8
+      iscommand: true
+      name: Create portal task to clean up hosts
+      script: '|||mssportal-create-task'
+      type: regular
+      version: -1
+    taskid: 85e4f29b-ef6f-48f0-841f-9793069e60e8
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -567,34 +575,34 @@ tasks:
           "y": 2820
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "21":
+    continueonerrortype: ""
     id: "21"
-    taskid: 437e43db-e601-4ab4-83eb-20a0e1a0cea1
-    type: regular
-    task:
-      id: 437e43db-e601-4ab4-83eb-20a0e1a0cea1
-      version: -1
-      name: Confirm the portal case as a true incident
-      description: 'mssportal-confirm-incident command: confirms the case as a true incident'
-      script: '|||mssportal-confirm-incident'
-      type: regular
-      iscommand: true
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "10"
+    note: false
+    quietmode: 0
     scriptarguments:
       id:
         simple: ${MSSPortal.Case.id}
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'mssportal-confirm-incident command: confirms the case as a true incident'
+      id: 437e43db-e601-4ab4-83eb-20a0e1a0cea1
+      iscommand: true
+      name: Confirm the portal case as a true incident
+      script: '|||mssportal-confirm-incident'
+      type: regular
+      version: -1
+    taskid: 437e43db-e601-4ab4-83eb-20a0e1a0cea1
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -602,34 +610,34 @@ tasks:
           "y": 2295
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "22":
+    continueonerrortype: ""
     id: "22"
-    taskid: 0cdf20d5-517a-418b-8149-fd10cb773b31
-    type: regular
-    task:
-      id: 0cdf20d5-517a-418b-8149-fd10cb773b31
-      version: -1
-      name: 'Get extra incident data '
-      description: Returns additional data for the specified incident, for example, related alerts, file artifacts, network artifacts, and so on.
-      script: Cortex XDR - IR|||xdr-get-incident-extra-data
-      type: regular
-      iscommand: true
-      brand: Cortex XDR - IR
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "2"
+    note: false
+    quietmode: 0
     scriptarguments:
       incident_id:
         simple: ${incident.xdrincidentid}
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: Cortex XDR - IR
+      description: Returns additional data for the specified incident, for example, related alerts, file artifacts, network artifacts, and so on.
+      id: 0cdf20d5-517a-418b-8149-fd10cb773b31
+      iscommand: true
+      name: 'Get extra incident data '
+      script: Cortex XDR - IR|||xdr-get-incident-extra-data
+      type: regular
+      version: -1
+    taskid: 0cdf20d5-517a-418b-8149-fd10cb773b31
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -637,38 +645,38 @@ tasks:
           "y": 370
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "23":
+    continueonerrortype: ""
     id: "23"
-    taskid: 6692fa8a-7bab-4e48-82d3-33cf01b0cf69
-    type: playbook
-    task:
-      id: 6692fa8a-7bab-4e48-82d3-33cf01b0cf69
-      version: -1
-      name: SOCaaS - Cortex XDR Malware - Incident Enrichment
-      playbookName: SOCaaS - Cortex XDR Malware - Incident Enrichment
-      type: playbook
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
       iscommand: false
-      brand: ""
+      max: 100
+      wait: 1
     nexttasks:
       '#none#':
       - "13"
+    note: false
+    quietmode: 0
     scriptarguments:
       IncidentID:
         simple: ${PaloAltoNetworksXDR.Incident.incident_id}
     separatecontext: true
-    continueonerrortype: ""
-    loop:
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6692fa8a-7bab-4e48-82d3-33cf01b0cf69
       iscommand: false
-      exitCondition: ""
-      wait: 1
-      max: 100
+      name: SOCaaS - Cortex XDR Malware - Incident Enrichment
+      playbookId: a3154fd7-21d8-4067-8c32-cd7bcd4afe07
+      type: playbook
+      version: -1
+    taskid: 6692fa8a-7bab-4e48-82d3-33cf01b0cf69
+    timertriggers: []
+    type: playbook
     view: |-
       {
         "position": {
@@ -676,31 +684,19 @@ tasks:
           "y": 1595
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "24":
+    continueonerrortype: ""
     id: "24"
-    taskid: a059e8ff-858a-4d77-8dca-02b4834dbd07
-    type: regular
-    task:
-      id: a059e8ff-858a-4d77-8dca-02b4834dbd07
-      version: -1
-      name: Create an alert to the case
-      description: 'mssportal-create-alert command: Returns a MSSPortal alert'
-      script: '|||mssportal-create-alert'
-      type: regular
-      iscommand: true
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "11"
       - "12"
       - "15"
+    note: false
+    quietmode: 2
     scriptarguments:
       caseDescription:
         simple: ${MSSPortal.Case.description}
@@ -718,22 +714,34 @@ tasks:
         simple: ${PaloAltoNetworksXDR.Incident.incident_id}
       sourceCreatedAt:
         complex:
-          root: PaloAltoNetworksXDR.Incident
           accessor: creation_time
+          root: PaloAltoNetworksXDR.Incident
           transformers:
           - operator: TimeStampToDate
       sourceId:
         simple: ${MSSPortal.Case.caseSource}
       sourceModifiedAt:
         complex:
-          root: PaloAltoNetworksXDR.Incident
           accessor: modification_time
+          root: PaloAltoNetworksXDR.Incident
           transformers:
           - operator: TimeStampToDate
       sourceRaw:
         simple: ${PaloAltoNetworksXDR.Incident}
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'mssportal-create-alert command: Returns a MSSPortal alert'
+      id: a059e8ff-858a-4d77-8dca-02b4834dbd07
+      iscommand: true
+      name: Create an alert to the case
+      script: '|||mssportal-create-alert'
+      type: regular
+      version: -1
+    taskid: a059e8ff-858a-4d77-8dca-02b4834dbd07
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -741,35 +749,35 @@ tasks:
           "y": 895
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 2
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "25":
+    continueonerrortype: ""
     id: "25"
-    taskid: c20cd9d9-2ba5-4e39-8f78-9ac0a23bfcb6
-    type: regular
-    task:
-      id: c20cd9d9-2ba5-4e39-8f78-9ac0a23bfcb6
-      version: -1
-      name: Handle Malware on VIP or SERVER
-      description: 'mssportal-create-task command: Returns a MSSPortal task'
-      type: regular
-      iscommand: false
-      brand: MSS Portal - MDR
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "4"
+    note: false
+    quietmode: 0
     separatecontext: false
+    skipunavailable: false
     sla:
-      minutes: 0
-      hours: 0
       days: 3
+      hours: 0
+      minutes: 0
       weeks: 0
-    continueonerrortype: ""
+    task:
+      brand: MSS Portal - MDR
+      description: 'mssportal-create-task command: Returns a MSSPortal task'
+      id: c20cd9d9-2ba5-4e39-8f78-9ac0a23bfcb6
+      iscommand: false
+      name: Handle Malware on VIP or SERVER
+      type: regular
+      version: -1
+    taskid: c20cd9d9-2ba5-4e39-8f78-9ac0a23bfcb6
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -777,30 +785,30 @@ tasks:
           "y": 2820
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "26":
+    continueonerrortype: ""
     id: "26"
-    taskid: ea9a4abe-7e51-46c8-8edd-cd3e812c3b3c
-    type: regular
-    task:
-      id: ea9a4abe-7e51-46c8-8edd-cd3e812c3b3c
-      version: -1
-      name: Get customer id
-      scriptName: SOCaaS-GetMSSPortalCustomerID
-      type: regular
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "22"
+    note: false
+    quietmode: 0
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ea9a4abe-7e51-46c8-8edd-cd3e812c3b3c
+      iscommand: false
+      name: Get customer id
+      script: a4743b1e-d208-4ff0-8272-d272c558ca46
+      type: regular
+      version: -1
+    taskid: ea9a4abe-7e51-46c8-8edd-cd3e812c3b3c
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -808,36 +816,36 @@ tasks:
           "y": 195
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "27":
+    continueonerrortype: ""
     id: "27"
-    taskid: 27a48b99-1a9d-4523-8d3f-95bb7f0ac34f
-    type: regular
-    task:
-      id: 27a48b99-1a9d-4523-8d3f-95bb7f0ac34f
-      version: -1
-      name: Find Malwre on host playbook on the portal
-      description: 'mssportal-find-playbook command: Returns a MSSPortal Playbook'
-      script: '|||mssportal-find-playbook'
-      type: regular
-      iscommand: true
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "28"
+    note: false
+    quietmode: 0
     scriptarguments:
       limit:
         simple: "1"
       searchText:
         simple: Malware on host
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'mssportal-find-playbook command: Returns a MSSPortal Playbook'
+      id: 27a48b99-1a9d-4523-8d3f-95bb7f0ac34f
+      iscommand: true
+      name: Find Malwre on host playbook on the portal
+      script: '|||mssportal-find-playbook'
+      type: regular
+      version: -1
+    taskid: 27a48b99-1a9d-4523-8d3f-95bb7f0ac34f
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -845,36 +853,36 @@ tasks:
           "y": 1245
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "28":
+    continueonerrortype: ""
     id: "28"
-    taskid: e13dc3eb-ea75-4a1a-8dfd-6047faeba433
-    type: regular
-    task:
-      id: e13dc3eb-ea75-4a1a-8dfd-6047faeba433
-      version: -1
-      name: Activate portal's  Malware on host playbook in the case
-      description: 'mssportal-activate-playbook command: activate portal playbook in the case'
-      script: '|||mssportal-activate-playbook'
-      type: regular
-      iscommand: true
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "23"
+    note: false
+    quietmode: 0
     scriptarguments:
       caseId:
         simple: ${MSSPortal.Case.id}
       playbookId:
         simple: ${MSSPortal.Playbook.content.[0].id}
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'mssportal-activate-playbook command: activate portal playbook in the case'
+      id: e13dc3eb-ea75-4a1a-8dfd-6047faeba433
+      iscommand: true
+      name: Activate portal's  Malware on host playbook in the case
+      script: '|||mssportal-activate-playbook'
+      type: regular
+      version: -1
+    taskid: e13dc3eb-ea75-4a1a-8dfd-6047faeba433
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -882,13 +890,7 @@ tasks:
           "y": 1420
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
+version: -1
 view: |-
   {
     "linkLabelsPosition": {},
@@ -901,6 +903,3 @@ view: |-
       }
     }
   }
-inputs: []
-outputs: []
-sourceplaybookid: Cortex XDR incident handling v3

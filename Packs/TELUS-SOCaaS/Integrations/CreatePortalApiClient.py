@@ -2,6 +2,7 @@ import json
 import os
 
 title = input("Enter the title of the integration. EX)SOC as a service from TELUS:")
+
 with open('apiClient.json', 'r+') as f:
     data = json.load(f)
     if title:
@@ -41,7 +42,7 @@ with open('apiClient.json', 'r+') as f:
 
 new_file_name = 'newApiClient.json'
 with open(new_file_name, 'w', encoding='utf-8') as f:
-    f.write(json.dumps(data, indent=2))
+    f.write(json.dumps(data, indent=4))
 
 name = input("Enter the name of integration: ")
 isdir = os.path.isdir(f"./{name}")

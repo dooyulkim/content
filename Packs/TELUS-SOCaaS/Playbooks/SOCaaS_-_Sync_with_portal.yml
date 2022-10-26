@@ -1,24 +1,31 @@
 id: 6dc39833-9dd7-4176-8523-952309374dbe
-version: 6
-vcShouldKeepItemLegacyProdMachine: false
+inputs: []
 name: SOCaaS - Sync with portal
+outputs: []
 starttaskid: "0"
 tasks:
   "0":
+    continueonerrortype: ""
     id: "0"
-    taskid: 1d972ef2-8170-4501-8724-bb47833f7dc0
-    type: start
-    task:
-      id: 1d972ef2-8170-4501-8724-bb47833f7dc0
-      version: -1
-      name: ""
-      iscommand: false
-      brand: ""
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
     nexttasks:
       '#none#':
       - "1"
+    note: false
+    quietmode: 0
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1d972ef2-8170-4501-8724-bb47833f7dc0
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 1d972ef2-8170-4501-8724-bb47833f7dc0
+    timertriggers: []
+    type: start
     view: |-
       {
         "position": {
@@ -26,57 +33,45 @@ tasks:
           "y": 50
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
   "1":
+    continueonerrortype: ""
     id: "1"
-    taskid: e88bac21-d4f8-4e1b-8f9b-bdb23df01522
-    type: regular
-    task:
-      id: e88bac21-d4f8-4e1b-8f9b-bdb23df01522
-      version: -1
-      name: mssportal-create-alert
-      description: Create an alert using Portal's MDR API
-      script: MSS Portal - MDR|||mssportal-create-alert
-      type: regular
-      iscommand: true
-      brand: MSS Portal - MDR
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
     scriptarguments:
       alert_id:
         simple: ${incident.alertid}
       created_at:
         complex:
-          root: incident
           accessor: sourcecreatetime
+          root: incident
           transformers:
-          - operator: DateStringToISOFormat
-            args:
+          - args:
               add_utc_timezone:
                 value:
                   simple: "true"
               dayfirst: {}
               fuzzy: {}
               yearfirst: {}
+            operator: DateStringToISOFormat
       customer_id:
         simple: "33096"
       modified_at:
         complex:
-          root: incident
           accessor: sourcecreatetime
+          root: incident
           transformers:
-          - operator: DateStringToISOFormat
-            args:
+          - args:
               add_utc_timezone:
                 value:
                   simple: "true"
               dayfirst: {}
               fuzzy: {}
               yearfirst: {}
+            operator: DateStringToISOFormat
       name:
         simple: ${incident.alertname}
       provider_id:
@@ -86,7 +81,19 @@ tasks:
       severity:
         simple: MEDIUM
     separatecontext: false
-    continueonerrortype: ""
+    skipunavailable: false
+    task:
+      brand: MSS Portal - MDR
+      description: Create an alert using Portal's MDR API
+      id: e88bac21-d4f8-4e1b-8f9b-bdb23df01522
+      iscommand: true
+      name: mssportal-create-alert
+      script: MSS Portal - MDR|||mssportal-create-alert
+      type: regular
+      version: -1
+    taskid: e88bac21-d4f8-4e1b-8f9b-bdb23df01522
+    timertriggers: []
+    type: regular
     view: |-
       {
         "position": {
@@ -94,13 +101,7 @@ tasks:
           "y": 230
         }
       }
-    note: false
-    timertriggers: []
-    ignoreworker: false
-    skipunavailable: false
-    quietmode: 0
-    isoversize: false
-    isautoswitchedtoquietmode: false
+version: -1
 view: |-
   {
     "linkLabelsPosition": {},
@@ -113,5 +114,3 @@ view: |-
       }
     }
   }
-inputs: []
-outputs: []

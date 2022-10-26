@@ -2321,7 +2321,7 @@ def test_module(client: Client) -> str:
         if 'Forbidden' in str(e):
             return 'Authorization Error: make sure API Key is correctly set'
         else:
-            raise e
+            return str(e)
     return 'ok'
 
 
@@ -2434,7 +2434,8 @@ def main() -> None:
         }
 
         if command == 'test-module':
-            test_module(client)
+            result = test_module(client)
+            return_results(result)
         elif command in commands:
             return_results(commands[command](client, args))
         else:

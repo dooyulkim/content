@@ -57,7 +57,7 @@ import io
 import json
 
 from CommonServerPython import tableToMarkdown
-from MSSPortal import (
+from SOCaaSMSSPortalAutoGen import (
     Client,
     activate_playbook_command,
     confirm_case_incident_command,
