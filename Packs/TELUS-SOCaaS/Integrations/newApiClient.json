@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "SOCaaS - MSS Portal - AutoGen",
+    "title": "MSSPortal",
     "version": "v1"
   },
   "servers": [
