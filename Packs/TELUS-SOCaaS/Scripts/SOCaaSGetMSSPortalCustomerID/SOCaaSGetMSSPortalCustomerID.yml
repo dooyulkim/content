@@ -14,3 +14,7 @@ scripttarget: 0
 subtype: python3
 tags: []
 type: python
+outputs:
+  - contextPath: MSSPortal.tsp_customer_id
+    description: MSS Portal Customer ID
+    type: number
