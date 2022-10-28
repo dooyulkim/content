@@ -15,6 +15,6 @@ subtype: python3
 tags: []
 type: python
 outputs:
-  - contextPath: MSSPortal.tsp_customer_id
+  - contextPath: MSSPortal.CustomerInfo.id
     description: MSS Portal Customer ID
     type: number

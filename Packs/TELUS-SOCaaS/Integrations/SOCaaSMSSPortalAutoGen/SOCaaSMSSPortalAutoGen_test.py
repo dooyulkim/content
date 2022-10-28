@@ -168,7 +168,8 @@ def test_create_playbook(mocker):
     client = Client(server_url=URL, verify=False, proxy=False, headers={}, auth={})
     result_playbook = util_load_json('./test_data/create_playbook.json')
     mocker.patch.object(Client, 'create_playbook_request', return_value=result_playbook)
-    results = create_playbook_command(client, args={'playbookcreation_name': 'Malware', 'playbookcreation_description': 'Description'})
+    results = create_playbook_command(client, args={'playbookcreation_name': 'Malware',
+                                      'playbookcreation_description': 'Description'})
     human_readable = tableToMarkdown('MSSPortal Playbook', result_playbook)
     assert results.readable_output == human_readable
 
@@ -228,7 +229,7 @@ def test_activate_playbook_command(mocker):
     """
     client = Client(server_url=URL, verify=False, proxy=False, headers={}, auth={})
     mocker.patch.object(Client, 'activate_playbook_request', return_value='')
-    results = activate_playbook_command(client, args={'activateplaybookrequest_caseid': '1234', 
+    results = activate_playbook_command(client, args={'activateplaybookrequest_caseid': '1234',
                                                       'activateplaybookrequest_playbookid': '1234'})
     human_readable = 'MSSPortal playbook 1234 was activated in the case 1234'
     assert results.readable_output == human_readable

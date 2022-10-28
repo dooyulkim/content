@@ -45,10 +45,14 @@ with open(new_file_name, 'w', encoding='utf-8') as f:
     f.write(json.dumps(data, indent=4))
 
 name = input("Enter the name of integration: ")
+if not name:
+    raise Exception("Sorry, you must specify the name of integration.")
 isdir = os.path.isdir(f"./{name}")
 if(isdir):
     raise Exception("Sorry, An integration with the same name exists.")
 else:
     command_prefix = input("Enter the command prefix. Ex) mssportal: ")
+    if not command_prefix:
+        raise Exception("Sorry, you must specify the command prefix..")
     command = f'demisto-sdk openapi-codegen -i {new_file_name} -n {name} -o {name} -u "id" -pr {command_prefix} -r "{name}" -afv'
     os.system(command)
