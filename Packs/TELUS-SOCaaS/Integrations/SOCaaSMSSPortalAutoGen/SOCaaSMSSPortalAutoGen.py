@@ -33,12 +33,12 @@ class Client(BaseClient):
         return response
 
     def activate_playbook_request(self, activateplaybookrequest_caseid, activateplaybookrequest_playbookid, activateplaybookrequest_excludedtaskids):
-        data = assign_params(caseId=activateplaybookrequest_caseid, playbookId=activateplaybookrequest_playbookid,
+        data = assign_params(values_to_ignore=(None, ''), caseId=activateplaybookrequest_caseid, playbookId=activateplaybookrequest_playbookid,
                              excludedTaskIds=activateplaybookrequest_excludedtaskids)
         headers = self._headers
 
         response = self._http_request(
-            'post', 'v1/tasks/from-playbook', json_data=data, headers=headers)
+            'post', 'v1/tasks/from-playbook', json_data=data, headers=headers, resp_type='text')
 
         return response
 
@@ -47,7 +47,7 @@ class Client(BaseClient):
         headers = self._headers
 
         response = self._http_request(
-            'post', f'v1/cases/{id_}/playbooks/{playbookId}', json_data=data, headers=headers)
+            'post', f'v1/cases/{id_}/playbooks/{playbookId}', json_data=data, headers=headers, resp_type='text')
 
         return response
 
@@ -82,7 +82,7 @@ class Client(BaseClient):
         headers = self._headers
 
         response = self._http_request(
-            'put', f'v1/cases/{id_}/incid_ent', headers=headers)
+            'put', f'v1/cases/{id_}/incident', headers=headers, resp_type='text')
 
         return response
 
@@ -528,7 +528,7 @@ class Client(BaseClient):
 
     def get_identities_request(self):
         headers = self._headers
-        
+
         response = self._http_request('get', 'v1/identities', headers=headers)
 
         return response
@@ -634,7 +634,7 @@ class Client(BaseClient):
         headers = self._headers
 
         response = self._http_request(
-            'put', f'v1/cases/{id_}/resolution', json_data=data, headers=headers)
+            'put', f'v1/cases/{id_}/resolution', json_data=data, headers=headers, resp_type='text')
 
         return response
 
@@ -644,7 +644,7 @@ class Client(BaseClient):
         headers = self._headers
 
         response = self._http_request(
-            'put', f'v1/cases/{id_}', json_data=data, headers=headers)
+            'put', f'v1/cases/{id_}', json_data=data, headers=headers, resp_type='text')
 
         return response
 
@@ -2039,7 +2039,7 @@ def resolve_case_command(client: Client, args: Dict[str, Any]) -> CommandResults
         args.get('caseresolution_resolutionnotes', ''))
 
     response = client.resolve_case_request(id_, caseresolution_resolutionnotes)
-    
+
     command_results = CommandResults(
         readable_output=f'MSSPortal Case {id_} resolved - {caseresolution_resolutionnotes}',
         outputs_prefix='MSSPortal',
