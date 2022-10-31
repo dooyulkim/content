@@ -761,9 +761,6 @@ def acknowledge_case_command(client: Client, args: Dict[str, Any]) -> CommandRes
     response = client.acknowledge_case_request(id_)
     command_results = CommandResults(
         readable_output=f'MSSPortal Case {id_} acknowledged',
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -775,9 +772,6 @@ def acknowledge_comment_on_task_command(client: Client, args: Dict[str, Any]) ->
 
     response = client.acknowledge_comment_on_task_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -789,9 +783,6 @@ def acknowledge_task_command(client: Client, args: Dict[str, Any]) -> CommandRes
 
     response = client.acknowledge_task_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -810,9 +801,6 @@ def activate_playbook_command(client: Client, args: Dict[str, Any]) -> CommandRe
         activateplaybookrequest_caseid, activateplaybookrequest_playbookid, activateplaybookrequest_excludedtaskids)
     command_results = CommandResults(
         readable_output=f'MSSPortal playbook {activateplaybookrequest_playbookid} was activated in the case {activateplaybookrequest_caseid}',
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -826,9 +814,6 @@ def activate_playbook_1_command(client: Client, args: Dict[str, Any]) -> Command
 
     response = client.activate_playbook_1_request(id_, playbookId, body)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -841,9 +826,6 @@ def add_linked_cases_command(client: Client, args: Dict[str, Any]) -> CommandRes
 
     response = client.add_linked_cases_request(id_, body)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -856,9 +838,6 @@ def add_linked_threat_command(client: Client, args: Dict[str, Any]) -> CommandRe
 
     response = client.add_linked_threat_request(id_, threatId)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -873,9 +852,6 @@ def add_threat_comment_command(client: Client, args: Dict[str, Any]) -> CommandR
     response = client.add_threat_comment_request(
         id_, threatcommentcreation_commenttexthtml)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -888,9 +864,6 @@ def confirm_case_incident_command(client: Client, args: Dict[str, Any]) -> Comma
     response = client.confirm_case_incident_request(id_)
     command_results = CommandResults(
         readable_output=f'MSSPortal Case {id_} confirmed as a true incident',
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -971,9 +944,6 @@ def create_comment_on_case_command(client: Client, args: Dict[str, Any]) -> Comm
     response = client.create_comment_on_case_request(
         id_, casecommentcreation_commenttexthtml)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -990,9 +960,6 @@ def create_comment_on_task_command(client: Client, args: Dict[str, Any]) -> Comm
     response = client.create_comment_on_task_request(
         taskcommentcreation_taskid, taskcommentcreation_commenttexthtml, taskcommentcreation_authorship)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1153,9 +1120,6 @@ def delete_customer_command(client: Client, args: Dict[str, Any]) -> CommandResu
 
     response = client.delete_customer_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1167,9 +1131,6 @@ def delete_identity_command(client: Client, args: Dict[str, Any]) -> CommandResu
 
     response = client.delete_identity_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1181,9 +1142,6 @@ def delete_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResu
 
     response = client.delete_playbook_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1195,9 +1153,6 @@ def delete_playbook_task_command(client: Client, args: Dict[str, Any]) -> Comman
 
     response = client.delete_playbook_task_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1209,9 +1164,6 @@ def delete_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
 
     response = client.delete_task_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1223,9 +1175,6 @@ def delete_threat_command(client: Client, args: Dict[str, Any]) -> CommandResult
 
     response = client.delete_threat_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1237,9 +1186,6 @@ def delete_webhook_command(client: Client, args: Dict[str, Any]) -> CommandResul
 
     response = client.delete_webhook_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1254,9 +1200,6 @@ def download_case_attachment_command(client: Client, args: Dict[str, Any]) -> Co
     response = client.download_case_attachment_request(
         id_, name, forceDownload)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1271,9 +1214,6 @@ def download_task_attachment_command(client: Client, args: Dict[str, Any]) -> Co
     response = client.download_task_attachment_request(
         id_, name, forceDownload)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1288,9 +1228,6 @@ def download_threat_attachment_command(client: Client, args: Dict[str, Any]) -> 
     response = client.download_threat_attachment_request(
         id_, name, forceDownload)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1399,9 +1336,6 @@ def find_case_sources_by_customer_id_command(client: Client, args: Dict[str, Any
 
     response = client.find_case_sources_by_customer_id_request(customerId)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1462,9 +1396,6 @@ def find_count_of_unread_comments_by_case_id_and_accountable_command(client: Cli
     response = client.find_count_of_unread_comments_by_case_id_and_accountable_request(
         caseId, accountable)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1679,9 +1610,6 @@ def find_task_count_command(client: Client, args: Dict[str, Any]) -> CommandResu
     response = client.find_task_count_request(id_, name, description, caseId, accountable, phase, priority, status, telusPrime,
                                               createdAt_from, createdAt_to, dueDate, customerId, caseTitle, searchText, resolvedAt_from, resolvedAt_to, resolvedBy, sort)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1892,9 +1820,6 @@ def put_current_key_command(client: Client, args: Dict[str, Any]) -> CommandResu
 
     response = client.put_current_key_request(body)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1909,9 +1834,6 @@ def put_customer_command(client: Client, args: Dict[str, Any]) -> CommandResults
     response = client.put_customer_request(
         id_, customerupdate_caseretentionperiodmonths)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1930,9 +1852,6 @@ def put_identity_command(client: Client, args: Dict[str, Any]) -> CommandResults
     response = client.put_identity_request(
         id_, identityupdate_grantedbehalfuserpattern, identityupdate_ratelimitconfiguration, identityupdate_permissions)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1952,9 +1871,6 @@ def put_webhook_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     response = client.put_webhook_request(id_, webhookupdate_url, webhookupdate_authenticationheadername,
                                           webhookupdate_authenticationheadervalue, webhookupdate_eventtypes)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1966,9 +1882,6 @@ def remove_case_attachment_command(client: Client, args: Dict[str, Any]) -> Comm
 
     response = client.remove_case_attachment_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1981,9 +1894,6 @@ def remove_linked_case_command(client: Client, args: Dict[str, Any]) -> CommandR
 
     response = client.remove_linked_case_request(id_, linkedCaseId)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -1996,9 +1906,6 @@ def remove_linked_threat_command(client: Client, args: Dict[str, Any]) -> Comman
 
     response = client.remove_linked_threat_request(id_, threatId)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2010,9 +1917,6 @@ def remove_task_attachment_command(client: Client, args: Dict[str, Any]) -> Comm
 
     response = client.remove_task_attachment_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2024,9 +1928,6 @@ def remove_threat_attachment_command(client: Client, args: Dict[str, Any]) -> Co
 
     response = client.remove_threat_attachment_request(id_)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2042,9 +1943,6 @@ def resolve_case_command(client: Client, args: Dict[str, Any]) -> CommandResults
 
     command_results = CommandResults(
         readable_output=f'MSSPortal Case {id_} resolved - {caseresolution_resolutionnotes}',
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2066,9 +1964,6 @@ def update_case_command(client: Client, args: Dict[str, Any]) -> CommandResults:
                                           caseupdate_resolutionnotes)
     command_results = CommandResults(
         readable_output=f'MSSPortal Case {id_} updated',
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2097,9 +1992,6 @@ def update_comment_on_task_command(client: Client, args: Dict[str, Any]) -> Comm
     response = client.update_comment_on_task_request(id_, taskcommentinfo_id, taskcommentinfo_createdat, taskcommentinfo_createdby, taskcommentinfo_updatedat, taskcommentinfo_updatedby,
                                                      taskcommentinfo_commenttexthtml, taskcommentinfo_authorship, taskcommentinfo_acknowledged, taskcommentinfo_acknowledgedat, taskcommentinfo_acknowledgedby, taskcommentinfo_readat)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2119,9 +2011,6 @@ def update_comment_on_task_1_command(client: Client, args: Dict[str, Any]) -> Co
     response = client.update_comment_on_task_1_request(id_, casecommentinfo_id, casecommentinfo_createdat,
                                                        casecommentinfo_createdby, casecommentinfo_updatedat, casecommentinfo_updatedby, casecommentinfo_commenttexthtml)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2137,9 +2026,6 @@ def update_playbook_command(client: Client, args: Dict[str, Any]) -> CommandResu
     response = client.update_playbook_request(
         id_, playbookupdate_name, playbookupdate_description)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2162,9 +2048,6 @@ def update_playbook_task_command(client: Client, args: Dict[str, Any]) -> Comman
     response = client.update_playbook_task_request(id_, playbooktaskupdate_name, playbooktaskupdate_description,
                                                    playbooktaskupdate_accountable, playbooktaskupdate_priority, playbooktaskupdate_phase, playbooktaskupdate_duedateperiod)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2177,9 +2060,6 @@ def update_read_flag_for_comment_on_task_command(client: Client, args: Dict[str,
 
     response = client.update_read_flag_for_comment_on_task_request(id_, body)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2200,9 +2080,6 @@ def update_task_command(client: Client, args: Dict[str, Any]) -> CommandResults:
     response = client.update_task_request(id_, taskupdate_status, taskupdate_telusprime, taskupdate_name,
                                           taskupdate_description, taskupdate_priority, taskupdate_modifiedbytelus, taskupdate_duedate)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2218,9 +2095,6 @@ def update_threat_command(client: Client, args: Dict[str, Any]) -> CommandResult
     response = client.update_threat_request(
         id_, threatupdate_description, threatupdate_actor, threatupdate_detailhtml)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2235,9 +2109,6 @@ def update_threat_comment_command(client: Client, args: Dict[str, Any]) -> Comma
     response = client.update_threat_comment_request(
         id_, threatcommentupdate_commenttexthtml)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2250,9 +2121,6 @@ def upload_case_attachment_command(client: Client, args: Dict[str, Any]) -> Comm
 
     response = client.upload_case_attachment_request(id_, body)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2265,9 +2133,6 @@ def upload_task_attachment_command(client: Client, args: Dict[str, Any]) -> Comm
 
     response = client.upload_task_attachment_request(id_, body)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
@@ -2280,9 +2145,6 @@ def upload_threat_attachment_command(client: Client, args: Dict[str, Any]) -> Co
 
     response = client.upload_threat_attachment_request(id_, body)
     command_results = CommandResults(
-        outputs_prefix='MSSPortal',
-        outputs_key_field='',
-        outputs=response,
         raw_response=response
     )
 
